@@ -34,7 +34,8 @@ export const LOADER_STYLES = [
     {
         id: 'ring',
         name: () => i18n.t('LoaderStyleRing') || 'Rotating Ring',
-        description: () => i18n.t('LoaderStyleRingDesc') || 'Lightweight circular ring with minimal GPU & CPU overhead.',
+        description: () =>
+            i18n.t('LoaderStyleRingDesc') || 'Lightweight circular ring with minimal GPU & CPU overhead.',
         badge: () => i18n.t('LoaderStyleBadgeEfficient') || 'Lightweight'
     },
     {

@@ -31,7 +31,9 @@ export class SidebarTab {
     }
 
     _drop(id, options, current) {
-        return (this.page && typeof this.page._renderDropdown === 'function') ? this.page._renderDropdown(id, options, current) : '';
+        return this.page && typeof this.page._renderDropdown === 'function'
+            ? this.page._renderDropdown(id, options, current)
+            : '';
     }
 
     _item(name, desc, control, id = '', show = true) {
@@ -84,7 +86,10 @@ export class SidebarTab {
             { value: 'theme', label: i18n.t('OptionCollapsedSidebarColorTheme') || 'Follow Theme' },
             { value: 'black', label: i18n.t('OptionCollapsedSidebarColorBlack') || 'Black' },
             { value: 'semi', label: i18n.t('OptionCollapsedSidebarColorSemi') || 'Semi-transparent' },
-            { value: 'tinted-semi', label: i18n.t('OptionCollapsedSidebarColorTintedSemi') || 'Tinted Semi-transparent' },
+            {
+                value: 'tinted-semi',
+                label: i18n.t('OptionCollapsedSidebarColorTintedSemi') || 'Tinted Semi-transparent'
+            },
             { value: 'transparent', label: i18n.t('OptionCollapsedSidebarColorTransparent') || 'Transparent' }
         ];
 
@@ -118,7 +123,8 @@ export class SidebarTab {
             { value: 'black', label: i18n.t('SidebarColorBlack') || 'Black' }
         ];
 
-        const focusControl = '<div class="setting-control" id="sidebar-focus-select-container"><div class="loading-spinner small"></div></div>';
+        const focusControl =
+            '<div class="setting-control" id="sidebar-focus-select-container"><div class="loading-spinner small"></div></div>';
 
         return `
             <div class="settings-tab-content">
@@ -171,19 +177,22 @@ export class SidebarTab {
             const viewsResponse = await api.getUserViews();
             const views = viewsResponse.Items || [];
 
-            const liveStaticItems = sidebarLayoutManager.getStaticItems().map((s) => ({ ...s, label: i18n.t(s.label) || s.label }));
+            const liveStaticItems = sidebarLayoutManager
+                .getStaticItems()
+                .map((s) => ({ ...s, label: i18n.t(s.label) || s.label }));
             const liveLibraries = views.map((lib) => ({ id: `lib-${lib.Id}`, label: lib.Name }));
 
             const layoutVars = sidebarLayoutManager.buildSettingsLayout(liveStaticItems);
             const libraryVars = sidebarLayoutManager.buildLibrarySettingsLayout(liveLibraries);
 
             const buildListHtml = (vars) => {
-                return vars.map((item, index) => {
-                    const isFirst = index === 0;
-                    const isLast = index === vars.length - 1;
-                    const isLocked = item.locked;
-                    const eye = (!item.hidden || isLocked) ? EYE_ON : EYE_OFF;
-                    return `
+                return vars
+                    .map((item, index) => {
+                        const isFirst = index === 0;
+                        const isLast = index === vars.length - 1;
+                        const isLocked = item.locked;
+                        const eye = !item.hidden || isLocked ? EYE_ON : EYE_OFF;
+                        return `
                     <div class="setting-item layout-row ${item.hidden && !isLocked ? 'layout-row-hidden' : ''}" data-id="${item.id}" data-index="${index}">
                         <div class="setting-label"><span class="setting-name layout-row-title">${item.label}</span></div>
                         <div class="setting-control layout-btns" dir="ltr">
@@ -192,7 +201,8 @@ export class SidebarTab {
                             <button class="btn btn-icon layout-btn-toggle" tabindex="0" ${isLocked ? 'disabled style="opacity:0.3"' : ''} aria-label="${!item.hidden || isLocked ? 'Hide' : 'Show'}">${eye}</button>
                         </div>
                     </div>`;
-                }).join('');
+                    })
+                    .join('');
             };
 
             const bindContainer = (containerDOM, varsArray, renderCb) => {
@@ -214,12 +224,18 @@ export class SidebarTab {
                         [varsArray[idx - 1], varsArray[idx]] = [varsArray[idx], varsArray[idx - 1]];
                         save();
                         renderCb();
-                        setTimeout(() => { const r = containerDOM.querySelector(`.layout-row[data-index="${idx - 1}"]`); if (r) focusManager.focusElement(r.querySelector('.layout-btn-up')); }, 50);
+                        setTimeout(() => {
+                            const r = containerDOM.querySelector(`.layout-row[data-index="${idx - 1}"]`);
+                            if (r) focusManager.focusElement(r.querySelector('.layout-btn-up'));
+                        }, 50);
                     } else if (btn.classList.contains('layout-btn-down') && idx < varsArray.length - 1) {
                         [varsArray[idx + 1], varsArray[idx]] = [varsArray[idx], varsArray[idx + 1]];
                         save();
                         renderCb();
-                        setTimeout(() => { const r = containerDOM.querySelector(`.layout-row[data-index="${idx + 1}"]`); if (r) focusManager.focusElement(r.querySelector('.layout-btn-down')); }, 50);
+                        setTimeout(() => {
+                            const r = containerDOM.querySelector(`.layout-row[data-index="${idx + 1}"]`);
+                            if (r) focusManager.focusElement(r.querySelector('.layout-btn-down'));
+                        }, 50);
                     } else if (btn.classList.contains('layout-btn-toggle') && !varsArray[idx].locked) {
                         varsArray[idx].hidden = !varsArray[idx].hidden;
                         if (varsArray[idx].hidden && sidebarLayoutManager.getDefaultFocus() === varsArray[idx].id) {
@@ -229,7 +245,10 @@ export class SidebarTab {
                         }
                         save();
                         renderCb();
-                        setTimeout(() => { const r = containerDOM.querySelector(`.layout-row[data-index="${idx}"]`); if (r) focusManager.focusElement(r.querySelector('.layout-btn-toggle')); }, 50);
+                        setTimeout(() => {
+                            const r = containerDOM.querySelector(`.layout-row[data-index="${idx}"]`);
+                            if (r) focusManager.focusElement(r.querySelector('.layout-btn-toggle'));
+                        }, 50);
                     }
                 };
             };
@@ -245,7 +264,11 @@ export class SidebarTab {
                     const validTargets = visibleItems.filter((v) => v.id !== 'librariesContainer');
                     const options = validTargets.map((item) => ({ value: item.id, label: item.label }));
 
-                    focusSelectContainer.innerHTML = this._drop('sidebar-default-focus-select', options, sidebarLayoutManager.getDefaultFocus());
+                    focusSelectContainer.innerHTML = this._drop(
+                        'sidebar-default-focus-select',
+                        options,
+                        sidebarLayoutManager.getDefaultFocus()
+                    );
                     const btn = focusSelectContainer.querySelector('.select-btn');
                     if (btn) {
                         btn.onclick = () => {
@@ -256,7 +279,10 @@ export class SidebarTab {
                                     const labelSpan = btn.querySelector('.btn-label');
                                     if (labelSpan) labelSpan.innerText = newLabel;
                                     btn.dataset.value = newValue;
-                                    const cfg = sidebarLayoutManager.getSavedConfig() || { items: layoutVars, libraryItems: libraryVars };
+                                    const cfg = sidebarLayoutManager.getSavedConfig() || {
+                                        items: layoutVars,
+                                        libraryItems: libraryVars
+                                    };
                                     cfg.defaultFocus = newValue;
                                     sidebarLayoutManager.saveConfig(cfg);
                                     eventBus.emit('prefChanged:sidebarLayout');
@@ -301,16 +327,30 @@ export class SidebarTab {
         };
 
         bindToggle('#toggle-keep-sidebar-button', 'pref:keepSidebarNavButton', 'pref:keepSidebarNavButton');
-        bindToggle('#toggle-disable-sidebar-animation', 'pref:disableSidebarAnimation', 'prefChanged:disableSidebarAnimation');
-        bindToggle('#toggle-show-collapsed-library-icons', 'pref:showCollapsedLibraryIcons', 'prefChanged:showCollapsedLibraryIcons');
-        bindToggle('#toggle-hide-sidebar-library-header', 'pref:hideSidebarLibraryHeader', 'prefChanged:hideSidebarLibraryHeader');
+        bindToggle(
+            '#toggle-disable-sidebar-animation',
+            'pref:disableSidebarAnimation',
+            'prefChanged:disableSidebarAnimation'
+        );
+        bindToggle(
+            '#toggle-show-collapsed-library-icons',
+            'pref:showCollapsedLibraryIcons',
+            'prefChanged:showCollapsedLibraryIcons'
+        );
+        bindToggle(
+            '#toggle-hide-sidebar-library-header',
+            'pref:hideSidebarLibraryHeader',
+            'prefChanged:hideSidebarLibraryHeader'
+        );
 
         await this.setupSidebarLayoutUI();
     }
 
     destroy() {
         this._listeners.forEach((fn) => {
-            try { fn(); } catch (_) {}
+            try {
+                fn();
+            } catch (_) {}
         });
         this._listeners = [];
     }

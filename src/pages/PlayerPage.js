@@ -498,7 +498,9 @@ class PlayerPage extends Page {
             const lastStopped =
                 state.get(`playback:lastStopped:${this._item.Id}`) ||
                 state.get('playback:lastStoppedMap')?.[this._item.Id] ||
-                (state.get('playback:lastStopped')?.itemId === this._item.Id ? state.get('playback:lastStopped') : null);
+                (state.get('playback:lastStopped')?.itemId === this._item.Id
+                    ? state.get('playback:lastStopped')
+                    : null);
 
             if (lastStopped && Date.now() - lastStopped.timestamp < 900000) {
                 this._item.UserData = this._item.UserData || {};
@@ -3303,7 +3305,9 @@ class PlayerPage extends Page {
                 const pingUrl = `${api.serverUrl}/System/Ping`;
                 // Attach configured custom reverse proxy headers (e.g. Cloudflare Service Tokens)
                 const pingHeaders =
-                    typeof customHeaders !== 'undefined' && customHeaders && typeof customHeaders.getHeadersForUrl === 'function'
+                    typeof customHeaders !== 'undefined' &&
+                    customHeaders &&
+                    typeof customHeaders.getHeadersForUrl === 'function'
                         ? customHeaders.getHeadersForUrl(pingUrl, api.serverUrl)
                         : {};
                 const response = await fetch(pingUrl, {
@@ -3485,7 +3489,9 @@ class PlayerPage extends Page {
                 const pingUrl = `${api.serverUrl}/System/Ping`;
                 // Attach configured custom reverse proxy headers (e.g. Cloudflare Service Tokens)
                 const pingHeaders =
-                    typeof customHeaders !== 'undefined' && customHeaders && typeof customHeaders.getHeadersForUrl === 'function'
+                    typeof customHeaders !== 'undefined' &&
+                    customHeaders &&
+                    typeof customHeaders.getHeadersForUrl === 'function'
                         ? customHeaders.getHeadersForUrl(pingUrl, api.serverUrl)
                         : {};
                 const response = await fetch(pingUrl, {
@@ -4479,7 +4485,11 @@ class PlayerPage extends Page {
             log.warn('Backdrop image failed to load, maintaining solid black loading background');
 
             // Fallback: If native interception failed, attempt JS fetch & Blob URL conversion
-            if (typeof customHeaders !== 'undefined' && customHeaders?.hasCustomHeaders?.() && (img.src === backdropUrl || !img.src.startsWith('blob:'))) {
+            if (
+                typeof customHeaders !== 'undefined' &&
+                customHeaders?.hasCustomHeaders?.() &&
+                (img.src === backdropUrl || !img.src.startsWith('blob:'))
+            ) {
                 customHeaders
                     .resolveImageUrl(backdropUrl, null, { bypassNative: true })
                     .then((blobUrl) => {

@@ -1342,8 +1342,10 @@ class AndroidAdapter {
     hasNativeHeaderInterception() {
         if (typeof window === 'undefined') return false;
         try {
-            return typeof window.LitefinAndroid?.hasNativeHeaderInterception === 'function' &&
-                Boolean(window.LitefinAndroid.hasNativeHeaderInterception());
+            return (
+                typeof window.LitefinAndroid?.hasNativeHeaderInterception === 'function' &&
+                Boolean(window.LitefinAndroid.hasNativeHeaderInterception())
+            );
         } catch (_) {
             return false;
         }

@@ -233,7 +233,9 @@ class HeroCarousel {
         // When reverse proxy headers are active, check native interception or cached Blob URL.
         // ---------------------------------------------------------------------
         const initialBackdrop = customHeaders?.hasCustomHeaders?.()
-            ? (customHeaders.hasNativeInterception?.(backdropUrl) ? backdropUrl : customHeaders.getCachedBlobUrl(backdropUrl) || null)
+            ? customHeaders.hasNativeInterception?.(backdropUrl)
+                ? backdropUrl
+                : customHeaders.getCachedBlobUrl(backdropUrl) || null
             : backdropUrl;
         const backdropStyle = isActive && initialBackdrop ? ` style="background-image: url('${initialBackdrop}')"` : '';
 

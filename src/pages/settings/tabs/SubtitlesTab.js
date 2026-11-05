@@ -134,41 +134,67 @@ export class SubtitlesTab {
 
         // Subtitle color palette options
         const colorOptions = [
-            { value: '#ffffff', label: i18n.t('SubtitleWhite') }, { value: '#d3d3d3', label: i18n.t('LightGrey') },
-            { value: '#a9a9a9', label: i18n.t('DarkGrey') }, { value: '#000000', label: i18n.t('SubtitleBlack') },
-            { value: '#ffff00', label: i18n.t('SubtitleYellow') }, { value: '#00ffff', label: i18n.t('SubtitleCyan') },
+            { value: '#ffffff', label: i18n.t('SubtitleWhite') },
+            { value: '#d3d3d3', label: i18n.t('LightGrey') },
+            { value: '#a9a9a9', label: i18n.t('DarkGrey') },
+            { value: '#000000', label: i18n.t('SubtitleBlack') },
+            { value: '#ffff00', label: i18n.t('SubtitleYellow') },
+            { value: '#00ffff', label: i18n.t('SubtitleCyan') },
             { value: '#0000ff', label: i18n.t('SubtitleBlue') }
         ];
 
         // Shared font list generator
         const defaultFontLabel = i18n.t(platformInfo.isWebOS ? 'DefaultWebOSSans' : 'DefaultTizenSans');
         const standardFontOptions = [
-            { value: '', label: defaultFontLabel }, { value: 'fallback-font', label: i18n.t('JellyfinFallbackFont') || 'Jellyfin Fallback Font' },
-            { value: 'poppins', label: i18n.t('FontPoppins') || 'Poppins' }, { value: 'roboto', label: i18n.t('FontRoboto') || 'Roboto' },
-            { value: 'google', label: i18n.t('FontGoogleSans') || 'Google Sans' }, { value: 'inter', label: i18n.t('FontInter') || 'Inter' },
-            { value: 'proxima', label: i18n.t('FontProxima') || 'Proxima Nova' }, { value: 'noto-arabic', label: i18n.t('ArabicNotoSans') },
-            { value: 'typewriter', label: i18n.t('Typewriter') }, { value: 'print', label: i18n.t('Print') },
-            { value: 'console', label: i18n.t('Console') }, { value: 'cursive', label: i18n.t('Cursive') },
-            { value: 'casual', label: i18n.t('Casual') }, { value: 'smallcaps', label: i18n.t('SmallCaps') },
-            { value: 'silkscreen', label: i18n.t('FontSilkscreen') || 'Silkscreen' }, { value: 'space-grotesk', label: i18n.t('FontSpaceGrotesk') || 'Space Grotesk' },
-            { value: 'retrotech', label: i18n.t('FontRetrotech') || 'RETROTECH' }, { value: 'kitty', label: i18n.t('FontKitty') || 'Kitty' },
-            { value: 'baloo', label: i18n.t('FontBaloo') || 'Baloo Bhaijaan 2' }, { value: 'poiret-one', label: i18n.t('FontPoiretOne') || 'Poiret One' },
-            { value: 'zen-kaku-gothic-new', label: i18n.t('FontZenKakuGothicNew') || 'Zen Kaku Gothic New' }, { value: 'opendyslexic', label: i18n.t('FontOpenDyslexic') || 'OpenDyslexic' },
-            { value: 'atkinson', label: i18n.t('FontAtkinson') || 'Atkinson Hyperlegible' }, { value: 'manrope', label: i18n.t('FontManrope') || 'Manrope' }
+            { value: '', label: defaultFontLabel },
+            { value: 'fallback-font', label: i18n.t('JellyfinFallbackFont') || 'Jellyfin Fallback Font' },
+            { value: 'poppins', label: i18n.t('FontPoppins') || 'Poppins' },
+            { value: 'roboto', label: i18n.t('FontRoboto') || 'Roboto' },
+            { value: 'google', label: i18n.t('FontGoogleSans') || 'Google Sans' },
+            { value: 'inter', label: i18n.t('FontInter') || 'Inter' },
+            { value: 'proxima', label: i18n.t('FontProxima') || 'Proxima Nova' },
+            { value: 'noto-arabic', label: i18n.t('ArabicNotoSans') },
+            { value: 'typewriter', label: i18n.t('Typewriter') },
+            { value: 'print', label: i18n.t('Print') },
+            { value: 'console', label: i18n.t('Console') },
+            { value: 'cursive', label: i18n.t('Cursive') },
+            { value: 'casual', label: i18n.t('Casual') },
+            { value: 'smallcaps', label: i18n.t('SmallCaps') },
+            { value: 'silkscreen', label: i18n.t('FontSilkscreen') || 'Silkscreen' },
+            { value: 'space-grotesk', label: i18n.t('FontSpaceGrotesk') || 'Space Grotesk' },
+            { value: 'retrotech', label: i18n.t('FontRetrotech') || 'RETROTECH' },
+            { value: 'kitty', label: i18n.t('FontKitty') || 'Kitty' },
+            { value: 'baloo', label: i18n.t('FontBaloo') || 'Baloo Bhaijaan 2' },
+            { value: 'poiret-one', label: i18n.t('FontPoiretOne') || 'Poiret One' },
+            { value: 'zen-kaku-gothic-new', label: i18n.t('FontZenKakuGothicNew') || 'Zen Kaku Gothic New' },
+            { value: 'opendyslexic', label: i18n.t('FontOpenDyslexic') || 'OpenDyslexic' },
+            { value: 'atkinson', label: i18n.t('FontAtkinson') || 'Atkinson Hyperlegible' },
+            { value: 'manrope', label: i18n.t('FontManrope') || 'Manrope' }
         ];
 
         const assFontOptions = [
-            { value: '', label: defaultFontLabel }, { value: 'poppins', label: i18n.t('ModernPoppins') },
-            { value: 'noto-arabic', label: i18n.t('ArabicNotoSans') }, { value: 'typewriter', label: i18n.t('Typewriter') },
-            { value: 'print', label: i18n.t('Print') }, { value: 'console', label: i18n.t('Console') },
-            { value: 'cursive', label: i18n.t('Cursive') }, { value: 'casual', label: i18n.t('Casual') },
-            { value: 'smallcaps', label: i18n.t('SmallCaps') }, { value: 'silkscreen', label: i18n.t('FontSilkscreen') || 'Silkscreen' },
-            { value: 'space-grotesk', label: i18n.t('FontSpaceGrotesk') || 'Space Grotesk' }, { value: 'retrotech', label: i18n.t('FontRetrotech') || 'RETROTECH' },
-            { value: 'kitty', label: i18n.t('FontKitty') || 'Kitty' }, { value: 'inter', label: i18n.t('FontInter') || 'Inter' },
-            { value: 'proxima', label: i18n.t('FontProxima') || 'Proxima Nova' }, { value: 'baloo', label: i18n.t('FontBaloo') || 'Baloo Bhaijaan 2' },
-            { value: 'poiret-one', label: i18n.t('FontPoiretOne') || 'Poiret One' }, { value: 'zen-kaku-gothic-new', label: i18n.t('FontZenKakuGothicNew') || 'Zen Kaku Gothic New' },
-            { value: 'opendyslexic', label: i18n.t('FontOpenDyslexic') || 'OpenDyslexic' }, { value: 'atkinson', label: i18n.t('FontAtkinson') || 'Atkinson Hyperlegible' },
-            { value: 'manrope', label: i18n.t('FontManrope') || 'Manrope' }, { value: 'fallback-font', label: i18n.t('JellyfinFallbackFont') || 'Jellyfin Fallback Font' }
+            { value: '', label: defaultFontLabel },
+            { value: 'poppins', label: i18n.t('ModernPoppins') },
+            { value: 'noto-arabic', label: i18n.t('ArabicNotoSans') },
+            { value: 'typewriter', label: i18n.t('Typewriter') },
+            { value: 'print', label: i18n.t('Print') },
+            { value: 'console', label: i18n.t('Console') },
+            { value: 'cursive', label: i18n.t('Cursive') },
+            { value: 'casual', label: i18n.t('Casual') },
+            { value: 'smallcaps', label: i18n.t('SmallCaps') },
+            { value: 'silkscreen', label: i18n.t('FontSilkscreen') || 'Silkscreen' },
+            { value: 'space-grotesk', label: i18n.t('FontSpaceGrotesk') || 'Space Grotesk' },
+            { value: 'retrotech', label: i18n.t('FontRetrotech') || 'RETROTECH' },
+            { value: 'kitty', label: i18n.t('FontKitty') || 'Kitty' },
+            { value: 'inter', label: i18n.t('FontInter') || 'Inter' },
+            { value: 'proxima', label: i18n.t('FontProxima') || 'Proxima Nova' },
+            { value: 'baloo', label: i18n.t('FontBaloo') || 'Baloo Bhaijaan 2' },
+            { value: 'poiret-one', label: i18n.t('FontPoiretOne') || 'Poiret One' },
+            { value: 'zen-kaku-gothic-new', label: i18n.t('FontZenKakuGothicNew') || 'Zen Kaku Gothic New' },
+            { value: 'opendyslexic', label: i18n.t('FontOpenDyslexic') || 'OpenDyslexic' },
+            { value: 'atkinson', label: i18n.t('FontAtkinson') || 'Atkinson Hyperlegible' },
+            { value: 'manrope', label: i18n.t('FontManrope') || 'Manrope' },
+            { value: 'fallback-font', label: i18n.t('JellyfinFallbackFont') || 'Jellyfin Fallback Font' }
         ];
 
         return `
@@ -180,50 +206,163 @@ export class SubtitlesTab {
 
                 <!-- Section 1: Playback & Delivery Preferences -->
                 ${this._item('LabelPreferredSubtitleLanguage', 'Preferred Subtitle Language', 'PreferredSubtitleLanguageDescription', 'Language to auto-select.', this._drop('subtitle-lang-select', prefLangs, savedSubtitleLang))}
-                ${this._item('LabelSubtitlePlaybackMode', 'Subtitle Playback Mode', 'SubtitleModeDescription', 'When to display subtitles.', this._drop('subtitle-mode-select', [
-                    { value: 'Default', label: i18n.t('DefaultServerPreference') }, { value: 'Smart', label: i18n.t('SmartForeignAudioOnly') },
-                    { value: 'OnlyForced', label: i18n.t('OnlyForced') }, { value: 'Always', label: i18n.t('Always') }, { value: 'None', label: i18n.t('None') }
-                ], PlayerSettings.get('subtitleMode')))}
-                ${this._item('SubtitleDelivery', 'Subtitle Delivery', 'SubtitleDeliveryDescription', 'Client vs Server burn-in.', this._drop('subtitle-burn-in-select', [
-                    { value: '', label: i18n.t('ClientRendersRecommended') }, { value: 'allcomplex', label: i18n.t('AutoComplexFormatsOnly') }, { value: 'all', label: i18n.t('AlwaysBurnIn') }
-                ], PlayerSettings.get('subtitleBurnIn') || ''))}
+                ${this._item(
+                    'LabelSubtitlePlaybackMode',
+                    'Subtitle Playback Mode',
+                    'SubtitleModeDescription',
+                    'When to display subtitles.',
+                    this._drop(
+                        'subtitle-mode-select',
+                        [
+                            { value: 'Default', label: i18n.t('DefaultServerPreference') },
+                            { value: 'Smart', label: i18n.t('SmartForeignAudioOnly') },
+                            { value: 'OnlyForced', label: i18n.t('OnlyForced') },
+                            { value: 'Always', label: i18n.t('Always') },
+                            { value: 'None', label: i18n.t('None') }
+                        ],
+                        PlayerSettings.get('subtitleMode')
+                    )
+                )}
+                ${this._item(
+                    'SubtitleDelivery',
+                    'Subtitle Delivery',
+                    'SubtitleDeliveryDescription',
+                    'Client vs Server burn-in.',
+                    this._drop(
+                        'subtitle-burn-in-select',
+                        [
+                            { value: '', label: i18n.t('ClientRendersRecommended') },
+                            { value: 'allcomplex', label: i18n.t('AutoComplexFormatsOnly') },
+                            { value: 'all', label: i18n.t('AlwaysBurnIn') }
+                        ],
+                        PlayerSettings.get('subtitleBurnIn') || ''
+                    )
+                )}
                 ${this._item('LabelRememberTracksForSession', 'Remember Tracks for Session', 'RememberTracksForSessionDescription', 'Automatically carry active audio and subtitle tracks.', this._toggle('subtitle-remember-tracks-toggle', PlayerSettings.get('rememberTracksForSession') !== false, 'rememberTracksForSession'))}
                 ${this._item('PreferExternalSubtitles', 'Prefer External Subtitles', 'PreferExternalSubtitlesDescription', 'Prefer external subtitle tracks over embedded ones.', this._toggle('subtitle-prefer-external-toggle', PlayerSettings.get('preferExternalSubtitles'), 'preferExternalSubtitles'))}
                 ${this._item('DisableAssRendering', 'Disable ASS Styling', 'DisableAssRenderingDescription', 'Force plain text mode.', this._toggle('subtitle-force-text-toggle', PlayerSettings.get('disableAssStyling'), 'disableAssStyling'))}
-                ${this._item('AssRenderer', 'ASS Subtitle Renderer', 'AssRendererDescription', 'Renderer engine.', this._drop('ass-renderer-select', [
-                    { value: 'libass-wasm', label: platformInfo.hasWasmSupport ? 'libass-wasm (WebGL/WASM, Recommended)' : 'libass-wasm (WebGL/WASM, Unsupported)' },
-                    { value: 'libjass', label: platformInfo.hasWasmSupport ? 'libjass (DOM, Older TV Compatible)' : 'libjass (DOM, Recommended / Older TV)' },
-                    { value: 'assjs', label: 'ass.js (Lightweight DOM, Experimental)' }
-                ], PlayerSettings.get('assRenderer')))}
+                ${this._item(
+                    'AssRenderer',
+                    'ASS Subtitle Renderer',
+                    'AssRendererDescription',
+                    'Renderer engine.',
+                    this._drop(
+                        'ass-renderer-select',
+                        [
+                            {
+                                value: 'libass-wasm',
+                                label: platformInfo.hasWasmSupport
+                                    ? 'libass-wasm (WebGL/WASM, Recommended)'
+                                    : 'libass-wasm (WebGL/WASM, Unsupported)'
+                            },
+                            {
+                                value: 'libjass',
+                                label: platformInfo.hasWasmSupport
+                                    ? 'libjass (DOM, Older TV Compatible)'
+                                    : 'libjass (DOM, Recommended / Older TV)'
+                            },
+                            { value: 'assjs', label: 'ass.js (Lightweight DOM, Experimental)' }
+                        ],
+                        PlayerSettings.get('assRenderer')
+                    )
+                )}
                 ${this._item('AssDropAnimations', 'Drop ASS Animations', 'AssDropAnimationsDescription', 'Skip animations on slow TVs.', this._toggle('toggle-subtitle-ass-drop-animations', PlayerSettings.get('subtitleAssDropAnimations'), 'subtitleAssDropAnimations'), 'ass-drop-animations-container', isLibassWasm)}
-                ${this._item('AssPrescaleFactor', 'Subtitle Canvas Scale', 'AssPrescaleFactorDescription', 'Scale ASS canvas buffer.', this._drop('ass-prescale-factor-select', [
-                    { value: 0.5, label: '0.5x (fastest)' }, { value: 0.6, label: '0.6x' }, { value: 0.7, label: '0.7x' },
-                    { value: 0.8, label: '0.8x (recommended)' }, { value: 0.9, label: '0.9x' }, { value: 1.0, label: '1.0x (highest quality)' }
-                ], PlayerSettings.get('subtitleAssPrescaleFactor')), 'ass-prescale-factor-container', isLibassWasm)}
-                ${this._item('LabelPgsPlaybackMode', 'PGS Subtitle Engine', 'PgsPlaybackModeDescription', 'Graphic subtitles.', this._drop('pgs-playback-mode-select', [
-                    { value: 'client', label: i18n.t('PgsModeClient') || 'Client Rendering (Web Worker, Smooth TV UI)' },
-                    { value: 'burn', label: i18n.t('PgsModeBurn') || 'Transcode (Force Server Burn-In)' },
-                    { value: 'disable', label: i18n.t('PgsModeDisable') || 'Disable and Hide Completely' }
-                ], PlayerSettings.get('pgsPlaybackMode')))}
+                ${this._item(
+                    'AssPrescaleFactor',
+                    'Subtitle Canvas Scale',
+                    'AssPrescaleFactorDescription',
+                    'Scale ASS canvas buffer.',
+                    this._drop(
+                        'ass-prescale-factor-select',
+                        [
+                            { value: 0.5, label: '0.5x (fastest)' },
+                            { value: 0.6, label: '0.6x' },
+                            { value: 0.7, label: '0.7x' },
+                            { value: 0.8, label: '0.8x (recommended)' },
+                            { value: 0.9, label: '0.9x' },
+                            { value: 1.0, label: '1.0x (highest quality)' }
+                        ],
+                        PlayerSettings.get('subtitleAssPrescaleFactor')
+                    ),
+                    'ass-prescale-factor-container',
+                    isLibassWasm
+                )}
+                ${this._item(
+                    'LabelPgsPlaybackMode',
+                    'PGS Subtitle Engine',
+                    'PgsPlaybackModeDescription',
+                    'Graphic subtitles.',
+                    this._drop(
+                        'pgs-playback-mode-select',
+                        [
+                            {
+                                value: 'client',
+                                label: i18n.t('PgsModeClient') || 'Client Rendering (Web Worker, Smooth TV UI)'
+                            },
+                            { value: 'burn', label: i18n.t('PgsModeBurn') || 'Transcode (Force Server Burn-In)' },
+                            { value: 'disable', label: i18n.t('PgsModeDisable') || 'Disable and Hide Completely' }
+                        ],
+                        PlayerSettings.get('pgsPlaybackMode')
+                    )
+                )}
 
                 <!-- Section 2: Subtitle Appearance -->
                 <h3 class="setting-section-title" data-i18n="HeaderSubtitleAppearance">${i18n.t('HeaderSubtitleAppearance')}</h3>
                 ${this._item('AppFont', 'Subtitle Font', 'AppFontDescription', 'Font family.', this._drop('subtitle-font-select', standardFontOptions, PlayerSettings.get('subtitleFont')))}
-                ${this._item('LabelTextSize', 'Text Size', 'TextSizeDescription', 'Subtitle size preset.', this._drop('subtitle-size-select', [
-                    { value: 'small', label: i18n.t('Small') }, { value: 'medium', label: i18n.t('Medium') },
-                    { value: 'mediumlarge', label: i18n.t('MediumLarge') }, { value: 'large', label: i18n.t('Large') },
-                    { value: 'larger', label: i18n.t('Larger') }, { value: 'extralarge', label: i18n.t('ExtraLarge') },
-                    { value: 'custom', label: i18n.t('Custom') }
-                ], PlayerSettings.get('subtitleSize')))}
+                ${this._item(
+                    'LabelTextSize',
+                    'Text Size',
+                    'TextSizeDescription',
+                    'Subtitle size preset.',
+                    this._drop(
+                        'subtitle-size-select',
+                        [
+                            { value: 'small', label: i18n.t('Small') },
+                            { value: 'medium', label: i18n.t('Medium') },
+                            { value: 'mediumlarge', label: i18n.t('MediumLarge') },
+                            { value: 'large', label: i18n.t('Large') },
+                            { value: 'larger', label: i18n.t('Larger') },
+                            { value: 'extralarge', label: i18n.t('ExtraLarge') },
+                            { value: 'custom', label: i18n.t('Custom') }
+                        ],
+                        PlayerSettings.get('subtitleSize')
+                    )
+                )}
                 ${this._sliderItem('CustomSize', 'Custom Size', 'CustomSizeDescription', 'Custom height in vh.', this._slider('subtitle-custom-size', PlayerSettings.get('subtitleSizeCustomValue'), 1, 20, 0.1, 'vh'), 'subtitle-custom-size-container', isCustomSize)}
-                ${this._item('LabelSubtitleVerticalPosition', 'Vertical Position', 'VerticalPositionDescription', 'Screen position.', this._drop('subtitle-position-select', [
-                    { value: '-1', label: i18n.t('BottomLow') }, { value: '-2', label: i18n.t('BottomStandard') },
-                    { value: '-5', label: i18n.t('BottomHigh') }, { value: '0', label: i18n.t('Top') },
-                    { value: '2', label: i18n.t('TopLow') }, { value: 'custom', label: i18n.t('CustomAbsolute') }
-                ], String(PlayerSettings.get('subtitleVerticalPosition'))))}
+                ${this._item(
+                    'LabelSubtitleVerticalPosition',
+                    'Vertical Position',
+                    'VerticalPositionDescription',
+                    'Screen position.',
+                    this._drop(
+                        'subtitle-position-select',
+                        [
+                            { value: '-1', label: i18n.t('BottomLow') },
+                            { value: '-2', label: i18n.t('BottomStandard') },
+                            { value: '-5', label: i18n.t('BottomHigh') },
+                            { value: '0', label: i18n.t('Top') },
+                            { value: '2', label: i18n.t('TopLow') },
+                            { value: 'custom', label: i18n.t('CustomAbsolute') }
+                        ],
+                        String(PlayerSettings.get('subtitleVerticalPosition'))
+                    )
+                )}
                 ${this._sliderItem('AbsolutePosition', 'Absolute Position', 'AbsolutePositionDescription', 'Position from bottom.', this._slider('subtitle-custom-pos', PlayerSettings.get('subtitleVerticalPositionCustom'), 0, 100, 1), 'subtitle-custom-pos-container')}
                 ${this._item('LabelSubtitleOsdDodging', 'Subtitle OSD Dodging', 'SubtitleOsdDodgingDescription', 'Shift subtitles above OSD controls.', this._toggle('subtitle-osd-dodging-toggle', PlayerSettings.get('subtitleOsdDodging') !== false, 'subtitleOsdDodging'))}
-                ${this._item('LabelTextWeight', 'Font Weight', 'FontWeightDescription', 'Weight of font.', this._drop('subtitle-weight-select', [{ value: 'normal', label: i18n.t('Normal') }, { value: 'bold', label: i18n.t('Bold') }], PlayerSettings.get('subtitleWeight') || 'normal'))}
+                ${this._item(
+                    'LabelTextWeight',
+                    'Font Weight',
+                    'FontWeightDescription',
+                    'Weight of font.',
+                    this._drop(
+                        'subtitle-weight-select',
+                        [
+                            { value: 'normal', label: i18n.t('Normal') },
+                            { value: 'bold', label: i18n.t('Bold') }
+                        ],
+                        PlayerSettings.get('subtitleWeight') || 'normal'
+                    )
+                )}
                 ${this._item('LabelTextColorSdr', 'SDR Text Color', 'TextColorSdrDescription', 'Color for standard dynamic range.', this._drop('subtitle-color-select', colorOptions, PlayerSettings.get('subtitleTextColor') || '#ffffff'))}
                 ${this._item('LabelTextColorHdr', 'HDR Text Color', 'TextColorHdrDescription', 'Color for high dynamic range.', this._drop('subtitle-color-select-hdr', colorOptions, PlayerSettings.get('subtitleTextColorHdr') || '#ffffff'))}
                 ${this._item('SubtitleOverrideColors', 'Override Colors', 'SubtitleOverrideColorsDesc', 'Override embedded subtitle colors.', this._toggle('subtitle-override-colors-toggle', PlayerSettings.get('subtitleOverrideColors'), 'subtitleOverrideColors'))}
@@ -233,19 +372,44 @@ export class SubtitlesTab {
                 ${this._sliderItem('PgsOpacityHdr', 'PGS HDR Opacity', 'PgsOpacityHdrDescription', 'PGS opacity for HDR.', this._slider('subtitle-pgs-opacity-hdr', PlayerSettings.get('subtitlePgsOpacityHdr') ?? 70, 0, 100, 5))}
                 ${this._item('BackgroundColor', 'Background Color', 'BackgroundColorDescription', 'Box backdrop color.', this._drop('subtitle-bg-select', [{ value: 'transparent', label: i18n.t('None') }, ...colorOptions], PlayerSettings.get('subtitleTextBackground')))}
                 ${this._sliderItem('BackgroundOpacity', 'Background Opacity', 'BackgroundOpacityDescription', 'Backdrop opacity.', this._slider('subtitle-bg-opacity', PlayerSettings.get('subtitleBackgroundOpacity'), 0, 100, 5), 'subtitle-bg-opacity-container')}
-                ${this._item('TextShadowStyle', 'Shadow Style', 'TextShadowStyleDescription', 'Edge styling.', this._drop('subtitle-shadow-select', [
-                    { value: 'none', label: i18n.t('None') }, { value: 'uniform', label: i18n.t('Uniform') },
-                    { value: 'border', label: i18n.t('Border') }, { value: 'uniform_border', label: i18n.t('UniformBorders') || 'Uniform + borders' },
-                    { value: 'dropshadow', label: i18n.t('DropShadow') }, { value: 'raised', label: i18n.t('Raised') },
-                    { value: 'depressed', label: i18n.t('Depressed') }
-                ], PlayerSettings.get('subtitleDropShadow')))}
+                ${this._item(
+                    'TextShadowStyle',
+                    'Shadow Style',
+                    'TextShadowStyleDescription',
+                    'Edge styling.',
+                    this._drop(
+                        'subtitle-shadow-select',
+                        [
+                            { value: 'none', label: i18n.t('None') },
+                            { value: 'uniform', label: i18n.t('Uniform') },
+                            { value: 'border', label: i18n.t('Border') },
+                            { value: 'uniform_border', label: i18n.t('UniformBorders') || 'Uniform + borders' },
+                            { value: 'dropshadow', label: i18n.t('DropShadow') },
+                            { value: 'raised', label: i18n.t('Raised') },
+                            { value: 'depressed', label: i18n.t('Depressed') }
+                        ],
+                        PlayerSettings.get('subtitleDropShadow')
+                    )
+                )}
                 ${this._sliderItem('BorderWidth', 'Border Width', 'BorderWidthDescription', 'Border thickness.', this._slider('subtitle-border-width', PlayerSettings.get('subtitleBorderWidth'), 1, 20, 1), 'subtitle-border-width-container', showBorderControls)}
                 ${this._sliderItem('BorderOpacity', 'Border Opacity', 'BorderOpacityDescription', 'Border opacity.', this._slider('subtitle-border-opacity', PlayerSettings.get('subtitleBorderOpacity') ?? 100, 0, 100, 5), 'subtitle-border-opacity-container', showBorderControls)}
-                ${this._item('ShadowColor', 'Shadow Color', 'ShadowColorDescription', 'Drop shadow tint.', this._drop('subtitle-shadow-color-select', [
-                    ...colorOptions, { value: '#ff0000', label: i18n.t('SubtitleRed') },
-                    { value: '#00ff00', label: i18n.t('SubtitleGreen') }, { value: '#ff00ff', label: i18n.t('SubtitleMagenta') },
-                    { value: '#808080', label: i18n.t('Grey') }
-                ], PlayerSettings.get('subtitleDropShadowColor') || '#000000'))}
+                ${this._item(
+                    'ShadowColor',
+                    'Shadow Color',
+                    'ShadowColorDescription',
+                    'Drop shadow tint.',
+                    this._drop(
+                        'subtitle-shadow-color-select',
+                        [
+                            ...colorOptions,
+                            { value: '#ff0000', label: i18n.t('SubtitleRed') },
+                            { value: '#00ff00', label: i18n.t('SubtitleGreen') },
+                            { value: '#ff00ff', label: i18n.t('SubtitleMagenta') },
+                            { value: '#808080', label: i18n.t('Grey') }
+                        ],
+                        PlayerSettings.get('subtitleDropShadowColor') || '#000000'
+                    )
+                )}
                 ${this._sliderItem('ShadowOpacity', 'Shadow Opacity', 'ShadowOpacityDescription', 'Shadow opacity.', this._slider('subtitle-shadow-opacity', PlayerSettings.get('subtitleDropShadowOpacity') ?? 100, 0, 100, 5), 'subtitle-shadow-opacity-container', showShadowOpacity)}
 
                 <!-- Section 3: Advanced ASS Settings -->

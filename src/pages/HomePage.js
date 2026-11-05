@@ -1567,8 +1567,8 @@ class HomePage extends Page {
                 sectionEl.style.setProperty('--card-expansion', '0px');
             } else if (isModern || isModernPosters) {
                 const scale = isModernPosters
-                    ? (parseFloat(storage.getItem('pref:modernPostersCardSizeScale')) || 1.2)
-                    : (parseFloat(storage.getItem('pref:modernCardSizeScale')) || 1.2);
+                    ? parseFloat(storage.getItem('pref:modernPostersCardSizeScale')) || 1.2
+                    : parseFloat(storage.getItem('pref:modernCardSizeScale')) || 1.2;
                 const itemMargin = Math.round(26 * scale);
                 sectionEl.style.setProperty('--card-width', `${Math.round(212 * scale)}px`);
                 sectionEl.style.setProperty('--card-height', `${Math.round(318 * scale)}px`);

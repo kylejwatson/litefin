@@ -1680,9 +1680,24 @@ class PersonPage extends Page {
 
         // Standard Jellyfin refresh modes
         const options = [
-            { id: 'scan', label: i18n.t('ScanForNewAndUpdatedFiles') || 'Scan for new and updated files', mode: 'Default', replace: false },
-            { id: 'missing', label: i18n.t('SearchForMissingMetadata') || 'Search for missing metadata', mode: 'FullRefresh', replace: false },
-            { id: 'all', label: i18n.t('ReplaceAllMetadata') || 'Replace all metadata', mode: 'FullRefresh', replace: true }
+            {
+                id: 'scan',
+                label: i18n.t('ScanForNewAndUpdatedFiles') || 'Scan for new and updated files',
+                mode: 'Default',
+                replace: false
+            },
+            {
+                id: 'missing',
+                label: i18n.t('SearchForMissingMetadata') || 'Search for missing metadata',
+                mode: 'FullRefresh',
+                replace: false
+            },
+            {
+                id: 'all',
+                label: i18n.t('ReplaceAllMetadata') || 'Replace all metadata',
+                mode: 'FullRefresh',
+                replace: true
+            }
         ];
 
         // Build option buttons

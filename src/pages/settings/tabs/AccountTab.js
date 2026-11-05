@@ -182,9 +182,7 @@ export class AccountTab {
 
         // Scope queries to container if provided, falling back to parent page or document
         const root =
-            container ||
-            (this.page && typeof this.page.$ === 'function' ? this.page.element : null) ||
-            document;
+            container || (this.page && typeof this.page.$ === 'function' ? this.page.element : null) || document;
 
         // ====================================================================
         // Profile PIN Enable / Disable Toggle

@@ -18,7 +18,14 @@ export { getDeviceSpecsData, openExternalUrl };
  * Shared modal dialog wrapper template generator.
  * @private
  */
-function renderDialogShell({ titleSvg, title, subtitle, contentHtml, closeBtnId = 'btn-about-modal-close', modalClass = '' }) {
+function renderDialogShell({
+    titleSvg,
+    title,
+    subtitle,
+    contentHtml,
+    closeBtnId = 'btn-about-modal-close',
+    modalClass = ''
+}) {
     return `
         <div class="settings-modal about-dialog-modal ${modalClass}" role="dialog" aria-modal="true" aria-label="${title}">
             <div class="about-dialog-header">
@@ -127,7 +134,17 @@ export class AboutModals {
      * Mounts, binds, and activates modal dialog trap.
      * @private
      */
-    _displayModal({ titleSvg, title, subtitle, contentHtml, closeBtnId = 'btn-about-modal-close', modalClass = '', defaultFocus, orientation = 'grid', actionBindings = [] }) {
+    _displayModal({
+        titleSvg,
+        title,
+        subtitle,
+        contentHtml,
+        closeBtnId = 'btn-about-modal-close',
+        modalClass = '',
+        defaultFocus,
+        orientation = 'grid',
+        actionBindings = []
+    }) {
         const overlay = this._getOverlay();
         if (!overlay) return;
 
@@ -318,13 +335,12 @@ export class AboutModals {
         this._displayModal({
             titleSvg: ABOUT_ICONS.discord,
             title: i18n.t('DiscordCommunity') || 'Discord Community',
-            subtitle: 'Scan to join the official Litefin Discord server. Connect with other users, ask questions, and share feedback.',
+            subtitle:
+                'Scan to join the official Litefin Discord server. Connect with other users, ask questions, and share feedback.',
             contentHtml: `<div class="about-qr-grid">${card}</div>`,
             modalClass: 'compact-modal',
             defaultFocus: '#btn-discord-open',
-            actionBindings: [
-                { selector: '#btn-discord-open', url: 'https://discord.gg/N3VpazBtTx' }
-            ]
+            actionBindings: [{ selector: '#btn-discord-open', url: 'https://discord.gg/N3VpazBtTx' }]
         });
     }
 

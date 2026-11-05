@@ -251,9 +251,7 @@ export class ControlsTab {
         this._unbindListeners();
 
         const root =
-            container ||
-            (this.page && typeof this.page.$ === 'function' ? this.page.element : null) ||
-            document;
+            container || (this.page && typeof this.page.$ === 'function' ? this.page.element : null) || document;
 
         // Toggle Confirm App Exit
         const confirmExitToggle = root.querySelector('#toggle-confirm-exit');

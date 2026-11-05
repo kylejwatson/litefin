@@ -37,8 +37,7 @@ export function getDeviceSpecsData() {
 
     // 2. Resolve target screen geometry and resolution tier
     const screenW =
-        caps.screenWidth ||
-        (typeof window !== 'undefined' ? window.screen?.width || window.innerWidth || 1920 : 1920);
+        caps.screenWidth || (typeof window !== 'undefined' ? window.screen?.width || window.innerWidth || 1920 : 1920);
     const screenH =
         caps.screenHeight ||
         (typeof window !== 'undefined' ? window.screen?.height || window.innerHeight || 1080 : 1080);

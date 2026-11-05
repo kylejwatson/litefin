@@ -128,23 +128,26 @@ export class AudioFallbackModal {
         const renderModal = (focusTarget = 'options') => {
             const currentSlotInfo = getSlotValueAndLabel(activeSlot);
             const currentSlotVal = currentSlotInfo.value;
-            const specialOption = activeSlot === 'pref'
-                ? { value: 'Default', label: i18n.t('Default') || 'Default' }
-                : { value: 'none', label: i18n.t('None') || 'None' };
+            const specialOption =
+                activeSlot === 'pref'
+                    ? { value: 'Default', label: i18n.t('Default') || 'Default' }
+                    : { value: 'none', label: i18n.t('None') || 'None' };
 
             const hasFavorites = languageManager.hasFavorites();
             if (!hasFavorites && activeFilter === 'favorites') activeFilter = 'all';
 
-            const filteredLanguages = hasFavorites && activeFilter === 'favorites'
-                ? languageManager.filterOptions(validLanguages)
-                : validLanguages;
+            const filteredLanguages =
+                hasFavorites && activeFilter === 'favorites'
+                    ? languageManager.filterOptions(validLanguages)
+                    : validLanguages;
 
             const slotOptions = [specialOption, ...filteredLanguages];
             const favoritesCount = validLanguages.filter((o) => languageManager.isFavorite(o)).length;
             const allCount = validLanguages.length;
 
             // Tier 1: Filter tabs
-            const filterPillsHtml = hasFavorites ? `
+            const filterPillsHtml = hasFavorites
+                ? `
                 <div class="modal-filter-pills has-slot-subrow" id="modal-lang-filter-pills">
                     <button class="modal-filter-pill ${activeFilter === 'favorites' ? 'active' : ''}" data-filter="favorites" tabindex="0">
                         ★ ${i18n.t('FavoritesOnly') || 'Favorites'} (${favoritesCount})
@@ -152,7 +155,8 @@ export class AudioFallbackModal {
                     <button class="modal-filter-pill ${activeFilter === 'all' ? 'active' : ''}" data-filter="all" tabindex="0">
                         ${i18n.t('AllLanguages') || 'All Languages'} (${allCount})
                     </button>
-                </div>` : '';
+                </div>`
+                : '';
 
             // Tier 2: Priority slot tabs
             const slotPillsHtml = `
@@ -160,7 +164,10 @@ export class AudioFallbackModal {
                     ${SLOTS.map((slot) => {
                         const isActive = slot === activeSlot;
                         const info = getSlotValueAndLabel(slot);
-                        const displayTitle = slot === 'pref' ? (i18n.t('Preferred') || 'Preferred') : `${i18n.t('Fallback') || 'Fallback'} ${slot}`;
+                        const displayTitle =
+                            slot === 'pref'
+                                ? i18n.t('Preferred') || 'Preferred'
+                                : `${i18n.t('Fallback') || 'Fallback'} ${slot}`;
                         return `
                             <button class="modal-filter-pill modal-slot-pill ${isActive ? 'active' : ''}" data-slot="${slot}" tabindex="0" title="${displayTitle}: ${escapeHtml(info.label)}">
                                 <span class="slot-pill-title">${displayTitle}:</span>
@@ -170,19 +177,23 @@ export class AudioFallbackModal {
                 </div>`;
 
             // Tier 3: Language options list
-            const optionsHtml = slotOptions.map((opt) => {
-                const isSelected = String(opt.value) === String(currentSlotVal);
-                const valStr = String(opt.value).toLowerCase();
-                const isSpecial = valStr === 'none' || valStr === 'default' || valStr === 'auto' || valStr === '-1';
-                const isFav = !isSpecial && languageManager.isFavorite(opt);
-                const starBtn = !isSpecial ? `<span class="modal-star-btn ${isFav ? 'active' : ''}" data-value="${opt.value}" role="button" aria-label="Toggle Favorite">${isFav ? '★' : '☆'}</span>` : '';
+            const optionsHtml = slotOptions
+                .map((opt) => {
+                    const isSelected = String(opt.value) === String(currentSlotVal);
+                    const valStr = String(opt.value).toLowerCase();
+                    const isSpecial = valStr === 'none' || valStr === 'default' || valStr === 'auto' || valStr === '-1';
+                    const isFav = !isSpecial && languageManager.isFavorite(opt);
+                    const starBtn = !isSpecial
+                        ? `<span class="modal-star-btn ${isFav ? 'active' : ''}" data-value="${opt.value}" role="button" aria-label="Toggle Favorite">${isFav ? '★' : '☆'}</span>`
+                        : '';
 
-                return `
+                    return `
                     <button class="modal-option-btn ${isSelected ? 'selected' : ''}" data-value="${opt.value}" tabindex="0">
                         <span class="modal-option-label">${escapeHtml(i18n.ensureBiDi(opt.label))}</span>
                         ${starBtn}
                     </button>`;
-            }).join('');
+                })
+                .join('');
 
             overlay.innerHTML = `
                 <div class="settings-modal" role="dialog" aria-modal="true">
@@ -197,8 +208,31 @@ export class AudioFallbackModal {
                     </div>
                 </div>`;
 
-            this._bindModalEvents(overlay, validLanguages, renderModal, () => activeSlot, (v) => { activeSlot = v; }, () => activeFilter, (v) => { activeFilter = v; });
-            this._registerFocusSections(overlay, hasFavorites, renderModal, SLOTS, () => activeSlot, (v) => { activeSlot = v; }, activeFilter, focusTarget);
+            this._bindModalEvents(
+                overlay,
+                validLanguages,
+                renderModal,
+                () => activeSlot,
+                (v) => {
+                    activeSlot = v;
+                },
+                () => activeFilter,
+                (v) => {
+                    activeFilter = v;
+                }
+            );
+            this._registerFocusSections(
+                overlay,
+                hasFavorites,
+                renderModal,
+                SLOTS,
+                () => activeSlot,
+                (v) => {
+                    activeSlot = v;
+                },
+                activeFilter,
+                focusTarget
+            );
         };
 
         overlay.classList.add('visible');
@@ -210,7 +244,15 @@ export class AudioFallbackModal {
      * Binds click and interaction events for the audio fallback modal.
      * @private
      */
-    _bindModalEvents(overlay, validLanguages, renderModal, getActiveSlot, setActiveSlot, getActiveFilter, setActiveFilter) {
+    _bindModalEvents(
+        overlay,
+        validLanguages,
+        renderModal,
+        getActiveSlot,
+        setActiveSlot,
+        getActiveFilter,
+        setActiveFilter
+    ) {
         // Wire option and star clicks
         overlay.querySelectorAll('.modal-option-btn').forEach((btn) => {
             btn.addEventListener('click', (e) => {
@@ -293,7 +335,16 @@ export class AudioFallbackModal {
      * Registers spatial navigation focus sections for the modal.
      * @private
      */
-    _registerFocusSections(overlay, hasFavorites, renderModal, SLOTS, getActiveSlot, setActiveSlot, activeFilter, focusTarget) {
+    _registerFocusSections(
+        overlay,
+        hasFavorites,
+        renderModal,
+        SLOTS,
+        getActiveSlot,
+        setActiveSlot,
+        activeFilter,
+        focusTarget
+    ) {
         const switchSlot = (direction, targetFocus) => {
             const isRtl = document.documentElement.getAttribute('dir') === 'rtl';
             const curIdx = SLOTS.indexOf(getActiveSlot());
@@ -340,11 +391,15 @@ export class AudioFallbackModal {
         setTimeout(() => {
             if (focusTarget === 'filter-pills' && hasFavorites) {
                 focusManager.setActiveSection('modal-filter-pills');
-                const pill = overlay.querySelector(`#modal-lang-filter-pills .modal-filter-pill[data-filter="${activeFilter}"]`);
+                const pill = overlay.querySelector(
+                    `#modal-lang-filter-pills .modal-filter-pill[data-filter="${activeFilter}"]`
+                );
                 if (pill) focusManager.focusElement(pill);
             } else if (focusTarget === 'slot-pills' || (focusTarget === 'filter-pills' && !hasFavorites)) {
                 focusManager.setActiveSection('modal-slot-pills');
-                const pill = overlay.querySelector(`#modal-audio-slot-pills .modal-slot-pill[data-slot="${getActiveSlot()}"]`);
+                const pill = overlay.querySelector(
+                    `#modal-audio-slot-pills .modal-slot-pill[data-slot="${getActiveSlot()}"]`
+                );
                 if (pill) focusManager.focusElement(pill);
             } else if (focusTarget === 'actions') {
                 focusManager.setActiveSection('modal-actions');
@@ -352,7 +407,8 @@ export class AudioFallbackModal {
                 if (btn) focusManager.focusElement(btn);
             } else {
                 focusManager.setActiveSection('modal-options');
-                const selected = overlay.querySelector('.modal-option-btn.selected') || overlay.querySelector('.modal-option-btn');
+                const selected =
+                    overlay.querySelector('.modal-option-btn.selected') || overlay.querySelector('.modal-option-btn');
                 if (selected) {
                     focusManager.focusElement(selected);
                     selected.scrollIntoView?.({ block: 'nearest' });

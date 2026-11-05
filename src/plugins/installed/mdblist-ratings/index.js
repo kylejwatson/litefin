@@ -133,7 +133,8 @@ export default {
 
             // Determine if full item info from Jellyfin is required
             const awardsAllowed = includeAwards && settings.awards.enabled && this._awardsEnabledOnServer !== false;
-            const needsItemInfo = (!finalImdbId && awardsAllowed) || ((!finalImdbId || !finalTmdbId) && settings.clickable);
+            const needsItemInfo =
+                (!finalImdbId && awardsAllowed) || ((!finalImdbId || !finalTmdbId) && settings.clickable);
 
             if (needsItemInfo) {
                 try {
@@ -180,11 +181,16 @@ export default {
                     tmdb: finalTmdbId
                 },
                 contentType: itemInfo?.Type
-                    ? (itemInfo.Type === 'Series' ? 'show' : itemInfo.Type.toLowerCase())
+                    ? itemInfo.Type === 'Series'
+                        ? 'show'
+                        : itemInfo.Type.toLowerCase()
                     : 'movie',
-                seasonNumber: itemInfo?.Type === 'Episode'
-                    ? itemInfo?.ParentIndexNumber
-                    : (itemInfo?.Type === 'Season' ? itemInfo?.IndexNumber : null),
+                seasonNumber:
+                    itemInfo?.Type === 'Episode'
+                        ? itemInfo?.ParentIndexNumber
+                        : itemInfo?.Type === 'Season'
+                          ? itemInfo?.IndexNumber
+                          : null,
                 episodeNumber: itemInfo?.Type === 'Episode' ? itemInfo?.IndexNumber : null
             };
 

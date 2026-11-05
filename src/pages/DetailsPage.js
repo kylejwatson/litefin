@@ -114,7 +114,7 @@ class DetailsPage extends Page {
      */
     _renderMediaCard(item, isLandscape, type, options = {}) {
         // Resolve contextType string cleanly so Page.js receives a valid string rather than an options Object
-        const contextType = typeof options === 'string' ? options : (options?.contextType || 'details-row');
+        const contextType = typeof options === 'string' ? options : options?.contextType || 'details-row';
         return super._renderMediaCard(item, isLandscape, type, contextType);
     }
 

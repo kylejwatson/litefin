@@ -34,7 +34,9 @@ export class HomeTab {
     }
 
     _drop(id, options, current) {
-        return (this.page && typeof this.page._renderDropdown === 'function') ? this.page._renderDropdown(id, options, current) : '';
+        return this.page && typeof this.page._renderDropdown === 'function'
+            ? this.page._renderDropdown(id, options, current)
+            : '';
     }
 
     _item(name, desc, control, id = '', show = true) {
@@ -64,14 +66,21 @@ export class HomeTab {
 
         const rowsOpts = [8, 10, 12, 15, 20, 25, 30, 50, 100, 200].map((v) => ({
             value: v,
-            label: (i18n.t('ItemCountValue', [v]) || `${v} items`) + (v === 12 ? ` (${i18n.t('Default') || 'Default'})` : '')
+            label:
+                (i18n.t('ItemCountValue', [v]) || `${v} items`) +
+                (v === 12 ? ` (${i18n.t('Default') || 'Default'})` : '')
         }));
 
         const buildTrending = (colKey, nameKey) => {
             const val = storage.getItem(colKey) || 'none';
             const name = storage.getItem(nameKey);
-            const opts = [{ value: 'none', label: i18n.t('Disabled') }, { value: 'auto', label: i18n.t('Auto') }, { value: 'top-rated', label: i18n.t('CommunityRating') }];
-            if (val && val !== 'none' && val !== 'auto' && val !== 'top-rated') opts.push({ value: val, label: name || val });
+            const opts = [
+                { value: 'none', label: i18n.t('Disabled') },
+                { value: 'auto', label: i18n.t('Auto') },
+                { value: 'top-rated', label: i18n.t('CommunityRating') }
+            ];
+            if (val && val !== 'none' && val !== 'auto' && val !== 'top-rated')
+                opts.push({ value: val, label: name || val });
             return { opts, val };
         };
         const mTrend = buildTrending('pref:trendingMoviesCollection', 'pref:trendingMoviesCollectionName');
@@ -79,7 +88,14 @@ export class HomeTab {
 
         const daysOpts = [0, 1, 2, 3, 4, 5, 6, 7, 14, 21, 28, 30, 60, 90, 180, 365].map((v) => ({
             value: v,
-            label: v === 0 ? i18n.t('Unlimited') : (v >= 365 ? i18n.t('YearValue', [1]) : (v >= 60 ? i18n.t('MonthsValue', [Math.round(v / 30)]) : i18n.t('DaysValue', [v])))
+            label:
+                v === 0
+                    ? i18n.t('Unlimited')
+                    : v >= 365
+                      ? i18n.t('YearValue', [1])
+                      : v >= 60
+                        ? i18n.t('MonthsValue', [Math.round(v / 30)])
+                        : i18n.t('DaysValue', [v])
         }));
 
         const heroStyles = [
@@ -89,7 +105,17 @@ export class HomeTab {
             { value: 'immersive-performance', label: i18n.t('StyleImmersivePerformance') || 'Immersive (Performance)' }
         ];
 
-        const heroQualities = ['default', 'low', 'medium-low', 'medium', 'medium-high', 'high', 'very-high', 'ultra', 'original'].map((q) => ({
+        const heroQualities = [
+            'default',
+            'low',
+            'medium-low',
+            'medium',
+            'medium-high',
+            'high',
+            'very-high',
+            'ultra',
+            'original'
+        ].map((q) => ({
             value: q,
             label: i18n.t(q.charAt(0).toUpperCase() + q.slice(1).replace('-', '')) || q
         }));
@@ -99,10 +125,13 @@ export class HomeTab {
             label: i18n.t('Seconds', [s]) || `${s} seconds`
         }));
 
-        const vignettes = [{ value: 'transparent', label: i18n.t('Transparent') || 'Transparent (0%)' }, ...[10, 20, 30, 40, 50, 60, 70, 80, 90].map((p) => ({
-            value: p.toString(),
-            label: p === 70 ? `70% (${i18n.t('Default') || 'Default'})` : `${p}%`
-        }))];
+        const vignettes = [
+            { value: 'transparent', label: i18n.t('Transparent') || 'Transparent (0%)' },
+            ...[10, 20, 30, 40, 50, 60, 70, 80, 90].map((p) => ({
+                value: p.toString(),
+                label: p === 70 ? `70% (${i18n.t('Default') || 'Default'})` : `${p}%`
+            }))
+        ];
 
         const customColsBtn = `<button class="setting-action-btn select-btn" id="btn-manage-custom-collections" tabindex="0" data-focusable="true"><span class="btn-label" id="custom-collections-count-label">${this.getCustomCollectionsLabel()}</span></button>`;
         const regenBtn = `<button class="btn btn-option" id="btn-regenerate-thumbs" tabindex="0" style="width: auto; min-width: 120px;" data-i18n="Regenerate">${i18n.t('Regenerate') || 'Regenerate'}</button>`;
@@ -122,11 +151,38 @@ export class HomeTab {
                 ${this._item(i18n.t('PreferEpisodeImages') || 'Prefer Episode Images', i18n.t('PreferEpisodeImagesDescription') || 'Show episode preview thumbnail on Next Up cards.', this._toggle('toggle-prefer-episode-images', storage.getItem('pref:preferEpisodeImagesLocal') === 'true'))}
                 ${this._item(i18n.t('LabelMaxDaysForNextUp'), i18n.t('MaxDaysForNextUpDescription'), this._drop('next-up-max-days-select', daysOpts, storage.getItem('pref:nextUpMaxDays') || 365))}
                 ${this._item(i18n.t('HideWatchedContentFromLatestMedia') || 'Hide played from Recently Added', i18n.t('HideWatchedContentFromLatestMediaDescription') || 'Hide watched items from Recently Added.', this._toggle('toggle-hide-played-latest', storage.getItem('pref:hidePlayedInLatest') === 'true'))}
-                ${this._item(i18n.t('LibraryThumbnails') || 'Library Thumbnails', i18n.t('LibraryThumbnailsDescription') || 'Style of library cards on home screen', this._drop('library-thumb-mode-select', [{ value: 'off', label: i18n.t('fromJellyfin') || 'From Jellyfin' }, { value: 'static', label: i18n.t('RandomStatic') || 'Random Backdrop (Static)' }, { value: 'dynamic', label: i18n.t('RandomDynamic') || 'Random Backdrop (Dynamic)' }], thumbMode))}
+                ${this._item(
+                    i18n.t('LibraryThumbnails') || 'Library Thumbnails',
+                    i18n.t('LibraryThumbnailsDescription') || 'Style of library cards on home screen',
+                    this._drop(
+                        'library-thumb-mode-select',
+                        [
+                            { value: 'off', label: i18n.t('fromJellyfin') || 'From Jellyfin' },
+                            { value: 'static', label: i18n.t('RandomStatic') || 'Random Backdrop (Static)' },
+                            { value: 'dynamic', label: i18n.t('RandomDynamic') || 'Random Backdrop (Dynamic)' }
+                        ],
+                        thumbMode
+                    )
+                )}
                 ${this._item(i18n.t('RegenerateThumbnails') || 'Regenerate Thumbnails', i18n.t('RegenerateThumbnailsDescription') || 'Pick new random backdrops for libraries', regenBtn, 'library-thumb-regenerate-container', thumbMode === 'static')}
                 ${this._item(i18n.t('HideLibraryLabels'), i18n.t('HideLibraryLabelsDescription'), this._toggle('toggle-library-labels', storage.getItem('pref:hideLibraryLabels') === 'true'))}
                 ${this._item(i18n.t('HideLiveTvInMyMedia') || 'Hide Live TV from My Media', i18n.t('HideLiveTvInMyMediaDescription') || "Hide Live TV card from 'My Media' row.", this._toggle('toggle-hide-livetv-home', storage.getItem('pref:hideLiveTvInMyMedia') === 'true'))}
-                ${this._item(i18n.t('DefaultLiveTvTab') || 'Default Live TV Tab', i18n.t('DefaultLiveTvTabDescription') || 'Default selected tab in Live TV.', this._drop('default-livetv-tab-select', [{ value: 'suggestions', label: (i18n.t('Suggestions') || 'Suggestions') + ` (${i18n.t('Default') || 'Default'})` }, { value: 'guide', label: i18n.t('Guide') || 'Guide' }, { value: 'channels', label: i18n.t('Channels') || 'Channels' }], storage.getItem('pref:defaultLiveTvTab') || 'suggestions'))}
+                ${this._item(
+                    i18n.t('DefaultLiveTvTab') || 'Default Live TV Tab',
+                    i18n.t('DefaultLiveTvTabDescription') || 'Default selected tab in Live TV.',
+                    this._drop(
+                        'default-livetv-tab-select',
+                        [
+                            {
+                                value: 'suggestions',
+                                label: (i18n.t('Suggestions') || 'Suggestions') + ` (${i18n.t('Default') || 'Default'})`
+                            },
+                            { value: 'guide', label: i18n.t('Guide') || 'Guide' },
+                            { value: 'channels', label: i18n.t('Channels') || 'Channels' }
+                        ],
+                        storage.getItem('pref:defaultLiveTvTab') || 'suggestions'
+                    )
+                )}
 
                 <h3 class="setting-section-title" data-i18n="HeroCarousel" style="margin-top: 40px;">${i18n.t('HeroCarousel') || 'Hero Carousel'}</h3>
                 ${this._item(i18n.t('EnableHeroCarousel') || 'Hero Carousel', i18n.t('EnableHeroCarouselDescription') || 'Show featured carousel at the top of the home screen.', this._toggle('toggle-hero-carousel', heroEnabled))}
@@ -134,14 +190,41 @@ export class HomeTab {
                 ${this._item(i18n.t('HeroCarouselCompact') || 'Compact Mode', i18n.t('HeroCarouselCompactDescription') || 'Reduces height of hero section.', this._toggle('toggle-hero-carousel-compact', storage.getItem('pref:heroCarouselCompact') !== 'false'), 'hero-carousel-compact-item', heroEnabled)}
                 ${this._item(i18n.t('HeroImageQuality') || 'Hero Background Quality', i18n.t('HeroImageQualityDescription') || 'Image quality for hero backgrounds.', this._drop('hero-image-quality-select', heroQualities, storage.getItem('pref:heroImageQuality') || 'default'), 'hero-image-quality-item', heroEnabled)}
                 ${this._item(i18n.t('HeroCarouselInterval') || 'Carousel Switch Timer', i18n.t('HeroCarouselIntervalDescription') || 'Slide switch duration.', this._drop('hero-carousel-interval-select', intervals, storage.getItem('pref:heroCarouselInterval') || '8000'), 'hero-carousel-interval-item', heroEnabled)}
-                ${this._item(i18n.t('HeroCarouselCount') || 'Carousel Item Count', i18n.t('HeroCarouselCountDescription') || 'Items to load in carousel (1-30).', this._drop('hero-carousel-count-select', [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 15, 20, 25, 30].map((v) => ({ value: v.toString(), label: v.toString() })), storage.getItem('pref:heroCarouselCount') || '5'), 'hero-carousel-count-item', heroEnabled)}
+                ${this._item(
+                    i18n.t('HeroCarouselCount') || 'Carousel Item Count',
+                    i18n.t('HeroCarouselCountDescription') || 'Items to load in carousel (1-30).',
+                    this._drop(
+                        'hero-carousel-count-select',
+                        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 15, 20, 25, 30].map((v) => ({
+                            value: v.toString(),
+                            label: v.toString()
+                        })),
+                        storage.getItem('pref:heroCarouselCount') || '5'
+                    ),
+                    'hero-carousel-count-item',
+                    heroEnabled
+                )}
                 ${this._item(i18n.t('HeroCarouselMdbList') || 'Show MDB Ratings & Awards', i18n.t('HeroCarouselMdbListDescription') || 'Display premium ratings and awards.', this._toggle('toggle-hero-carousel-mdb', storage.getItem('pref:heroCarouselMdbList') !== 'false'), 'hero-carousel-mdb-item', heroEnabled && pluginManager.isEnabled('mdblist-ratings'))}
                 ${this._item(i18n.t('HeroCarouselIgnoreWatched') || 'Ignore Watched Content', i18n.t('HeroCarouselIgnoreWatchedDescription') || 'Excludes watched content from carousel.', this._toggle('toggle-hero-carousel-ignore-watched', storage.getItem('pref:heroCarouselIgnoreWatched') === 'true'), 'hero-carousel-ignore-watched-item', heroEnabled)}
                 ${this._item(i18n.t('HeroCarouselTextTitle') || 'Use Text Titles', i18n.t('HeroCarouselTextTitleDescription') || 'Prefer text titles over logos.', this._toggle('toggle-hero-carousel-text-title', storage.getItem('pref:heroCarouselTextTitle') === 'true'), 'hero-carousel-text-title-item', heroEnabled)}
                 ${this._item(i18n.t('HeroCarouselVignette') || 'Text Vignette Contrast', i18n.t('HeroCarouselVignetteDescription') || 'Dark vignette gradient behind titles.', this._drop('hero-carousel-vignette-select', vignettes, layoutManager.getHeroVignette()), 'hero-carousel-vignette-item', heroEnabled)}
                 ${this._item(i18n.t('HeroCarouselZoom') || 'Enable Zoom Effect', i18n.t('HeroCarouselZoomDescription') || 'Subtle zoom animation on focus.', this._toggle('toggle-hero-carousel-zoom', storage.getItem('pref:heroCarouselZoom') === 'true'), 'hero-carousel-zoom-item', heroEnabled)}
                 ${this._item(i18n.t('HeroCarouselBlurhashFill') || 'BlurHash Color Fill', i18n.t('HeroCarouselBlurhashFillDescription') || 'Fill background with BlurHash colors.', this._toggle('toggle-hero-carousel-blurhash-fill', storage.getItem('pref:heroCarouselBlurhashFill') === 'true'), 'hero-carousel-blurhash-fill-item', heroEnabled && heroStyle === 'immersive-performance')}
-                ${this._item(i18n.t('HeroCarouselIndicatorStyle') || 'Indicator Style', i18n.t('HeroCarouselIndicatorStyleDescription') || 'Visual style of position indicators.', this._drop('hero-carousel-indicator-style-select', [{ value: 'dots', label: i18n.t('IndicatorStyleDots') || 'Simple Dots' }, { value: 'lines', label: i18n.t('IndicatorStyleLines') || 'Lines' }, { value: 'progress', label: i18n.t('IndicatorStyleProgress') || 'Progress Pill' }], indicatorStyle), 'hero-carousel-indicator-style-item', heroEnabled)}
+                ${this._item(
+                    i18n.t('HeroCarouselIndicatorStyle') || 'Indicator Style',
+                    i18n.t('HeroCarouselIndicatorStyleDescription') || 'Visual style of position indicators.',
+                    this._drop(
+                        'hero-carousel-indicator-style-select',
+                        [
+                            { value: 'dots', label: i18n.t('IndicatorStyleDots') || 'Simple Dots' },
+                            { value: 'lines', label: i18n.t('IndicatorStyleLines') || 'Lines' },
+                            { value: 'progress', label: i18n.t('IndicatorStyleProgress') || 'Progress Pill' }
+                        ],
+                        indicatorStyle
+                    ),
+                    'hero-carousel-indicator-style-item',
+                    heroEnabled
+                )}
                 ${this._item(i18n.t('HeroCarouselIndicatorAnimation') || 'Indicator Animation', i18n.t('HeroCarouselIndicatorAnimationDescription') || 'Progress animation for indicators.', this._toggle('toggle-indicator-animation', storage.getItem('pref:heroCarouselIndicatorAnimation') !== 'false'), 'hero-carousel-indicator-animation-item', heroEnabled && indicatorStyle === 'progress')}
 
                 <h3 class="setting-section-title" data-i18n="HomeLayoutOrder" style="margin-top: 40px;">${i18n.t('HomeLayoutOrder') || 'Home Screen Layout'}</h3>
@@ -160,26 +243,49 @@ export class HomeTab {
             const viewsResponse = await api.getUserViews();
             const views = viewsResponse.Items || [];
             const mergeResumeNextUp = storage.getItem('pref:mergeResumeNextUp') === 'true';
-            const descriptors = [{ id: 'my-media', title: i18n.t('HeaderMyMedia') }, { id: 'resume', title: i18n.t('HeaderContinueWatching') }];
+            const descriptors = [
+                { id: 'my-media', title: i18n.t('HeaderMyMedia') },
+                { id: 'resume', title: i18n.t('HeaderContinueWatching') }
+            ];
 
             const useTrendingColName = storage.getItem('pref:useTrendingCollectionName') === 'true';
             const addTrending = (colKey, nameKey, defTitleKey, id) => {
                 const col = storage.getItem(colKey) || 'auto';
                 const name = storage.getItem(nameKey);
                 if (col !== 'none') {
-                    descriptors.push({ id, title: (useTrendingColName && col !== 'auto' && col !== 'top-rated' && name) ? name : i18n.t(defTitleKey) });
+                    descriptors.push({
+                        id,
+                        title:
+                            useTrendingColName && col !== 'auto' && col !== 'top-rated' && name
+                                ? name
+                                : i18n.t(defTitleKey)
+                    });
                 }
             };
-            addTrending('pref:trendingMoviesCollection', 'pref:trendingMoviesCollectionName', 'HeaderTrendingMovies', 'trending');
-            addTrending('pref:trendingSeriesCollection', 'pref:trendingSeriesCollectionName', 'HeaderTrendingSeries', 'trending-series');
+            addTrending(
+                'pref:trendingMoviesCollection',
+                'pref:trendingMoviesCollectionName',
+                'HeaderTrendingMovies',
+                'trending'
+            );
+            addTrending(
+                'pref:trendingSeriesCollection',
+                'pref:trendingSeriesCollectionName',
+                'HeaderTrendingSeries',
+                'trending-series'
+            );
             if (!mergeResumeNextUp) descriptors.push({ id: 'next-up', title: i18n.t('NextUp') });
-            views.forEach((lib) => descriptors.push({ id: `latest-${lib.Id}`, title: i18n.t('LatestFromLibrary', [lib.Name]) }));
+            views.forEach((lib) =>
+                descriptors.push({ id: `latest-${lib.Id}`, title: i18n.t('LatestFromLibrary', [lib.Name]) })
+            );
 
             try {
                 const rawCustom = storage.getItem('pref:customCollectionRows');
                 const customList = rawCustom ? JSON.parse(rawCustom) : [];
                 if (Array.isArray(customList)) {
-                    customList.forEach((c) => { if (c && c.id) descriptors.push({ id: `collection-${c.id}`, title: c.name || 'Collection' }); });
+                    customList.forEach((c) => {
+                        if (c && c.id) descriptors.push({ id: `collection-${c.id}`, title: c.name || 'Collection' });
+                    });
                 }
             } catch (_) {}
 
@@ -190,13 +296,20 @@ export class HomeTab {
                     container.innerHTML = `<span class="setting-description">No layout configuration available.</span>`;
                     return;
                 }
-                container.innerHTML = `<div class="home-layout-list">` + layoutVars.map((item, idx) => {
-                    const isLocked = item.locked;
-                    const isFirst = idx === 0 || (idx > 0 && layoutVars[idx - 1].locked);
-                    const isLast = idx === layoutVars.length - 1 || (idx < layoutVars.length - 1 && layoutVars[idx + 1].locked);
-                    const eye = item.hidden ? EYE_OFF : EYE_ON;
-                    return `<div class="setting-item layout-row ${item.hidden ? 'layout-row-hidden' : ''}" data-id="${item.id}" data-index="${idx}"><div class="setting-label"><span class="setting-name layout-row-title">${item.title}</span></div><div class="setting-control layout-btns" dir="ltr"><button class="btn btn-icon layout-btn-up" tabindex="0" ${isFirst || isLocked ? 'disabled style="opacity:0.3"' : ''} aria-label="Move Up">${UP_SVG}</button><button class="btn btn-icon layout-btn-down" tabindex="0" ${isLast || isLocked ? 'disabled style="opacity:0.3"' : ''} aria-label="Move Down">${DOWN_SVG}</button><button class="btn btn-icon layout-btn-toggle" tabindex="0" aria-label="${item.hidden ? 'Show' : 'Hide'}">${eye}</button></div></div>`;
-                }).join('') + `</div>`;
+                container.innerHTML =
+                    `<div class="home-layout-list">` +
+                    layoutVars
+                        .map((item, idx) => {
+                            const isLocked = item.locked;
+                            const isFirst = idx === 0 || (idx > 0 && layoutVars[idx - 1].locked);
+                            const isLast =
+                                idx === layoutVars.length - 1 ||
+                                (idx < layoutVars.length - 1 && layoutVars[idx + 1].locked);
+                            const eye = item.hidden ? EYE_OFF : EYE_ON;
+                            return `<div class="setting-item layout-row ${item.hidden ? 'layout-row-hidden' : ''}" data-id="${item.id}" data-index="${idx}"><div class="setting-label"><span class="setting-name layout-row-title">${item.title}</span></div><div class="setting-control layout-btns" dir="ltr"><button class="btn btn-icon layout-btn-up" tabindex="0" ${isFirst || isLocked ? 'disabled style="opacity:0.3"' : ''} aria-label="Move Up">${UP_SVG}</button><button class="btn btn-icon layout-btn-down" tabindex="0" ${isLast || isLocked ? 'disabled style="opacity:0.3"' : ''} aria-label="Move Down">${DOWN_SVG}</button><button class="btn btn-icon layout-btn-toggle" tabindex="0" aria-label="${item.hidden ? 'Show' : 'Hide'}">${eye}</button></div></div>`;
+                        })
+                        .join('') +
+                    `</div>`;
                 focusManager.invalidateCache('settings-content');
             };
 
@@ -209,17 +322,33 @@ export class HomeTab {
                     [layoutVars[targetIdx], layoutVars[idx]] = [layoutVars[idx], layoutVars[targetIdx]];
                     homeLayoutManager.saveLayout(layoutVars);
                     renderList();
-                    setTimeout(() => { const r = container.querySelector(`.layout-row[data-index="${targetIdx}"]`); if (r) focusManager.focusElement(r.querySelector(sel)); }, 50);
+                    setTimeout(() => {
+                        const r = container.querySelector(`.layout-row[data-index="${targetIdx}"]`);
+                        if (r) focusManager.focusElement(r.querySelector(sel));
+                    }, 50);
                 };
-                if (btn.classList.contains('layout-btn-up') && idx > 0 && !layoutVars[idx].locked && !layoutVars[idx - 1].locked) {
+                if (
+                    btn.classList.contains('layout-btn-up') &&
+                    idx > 0 &&
+                    !layoutVars[idx].locked &&
+                    !layoutVars[idx - 1].locked
+                ) {
                     swap(idx - 1, '.layout-btn-up');
-                } else if (btn.classList.contains('layout-btn-down') && idx < layoutVars.length - 1 && !layoutVars[idx].locked && !layoutVars[idx + 1].locked) {
+                } else if (
+                    btn.classList.contains('layout-btn-down') &&
+                    idx < layoutVars.length - 1 &&
+                    !layoutVars[idx].locked &&
+                    !layoutVars[idx + 1].locked
+                ) {
                     swap(idx + 1, '.layout-btn-down');
                 } else if (btn.classList.contains('layout-btn-toggle') && !layoutVars[idx].locked) {
                     layoutVars[idx].hidden = !layoutVars[idx].hidden;
                     homeLayoutManager.saveLayout(layoutVars);
                     renderList();
-                    setTimeout(() => { const r = container.querySelector(`.layout-row[data-index="${idx}"]`); if (r) focusManager.focusElement(r.querySelector('.layout-btn-toggle')); }, 50);
+                    setTimeout(() => {
+                        const r = container.querySelector(`.layout-row[data-index="${idx}"]`);
+                        if (r) focusManager.focusElement(r.querySelector('.layout-btn-toggle'));
+                    }, 50);
                 }
             };
 
@@ -234,7 +363,12 @@ export class HomeTab {
         const rootEl = root || (this.page && this.page.element) || document;
 
         const enableRowsBtn = rootEl.querySelector('#toggle-enable-collection-rows');
-        const items = ['#trending-movies-collection-item', '#trending-series-collection-item', '#trending-collection-name-item', '#setting-custom-collections'];
+        const items = [
+            '#trending-movies-collection-item',
+            '#trending-series-collection-item',
+            '#trending-collection-name-item',
+            '#setting-custom-collections'
+        ];
 
         if (enableRowsBtn) {
             enableRowsBtn.addEventListener('click', () => {
@@ -314,7 +448,17 @@ export class HomeTab {
                 storage.setItem('pref:heroCarousel', next.toString());
                 heroBtn.classList.toggle('active', next);
 
-                const ids = ['#hero-carousel-text-title-item', '#hero-carousel-compact-item', '#hero-carousel-style-item', '#hero-carousel-zoom-item', '#hero-image-quality-item', '#hero-carousel-indicator-style-item', '#hero-carousel-interval-item', '#hero-carousel-count-item', '#hero-carousel-ignore-watched-item'];
+                const ids = [
+                    '#hero-carousel-text-title-item',
+                    '#hero-carousel-compact-item',
+                    '#hero-carousel-style-item',
+                    '#hero-carousel-zoom-item',
+                    '#hero-image-quality-item',
+                    '#hero-carousel-indicator-style-item',
+                    '#hero-carousel-interval-item',
+                    '#hero-carousel-count-item',
+                    '#hero-carousel-ignore-watched-item'
+                ];
                 ids.forEach((id) => {
                     const el = rootEl.querySelector(id);
                     if (el) el.style.display = next ? '' : 'none';
@@ -354,7 +498,9 @@ export class HomeTab {
             this.customCollectionsModal.close();
         }
         this._listeners.forEach((fn) => {
-            try { fn(); } catch (_) {}
+            try {
+                fn();
+            } catch (_) {}
         });
         this._listeners = [];
     }

@@ -23,9 +23,15 @@ const log = logger.create('BackupTab');
  * Sensitive storage keys excluded from cloud settings snapshots.
  */
 const EXCLUDED_BACKUP_KEYS = [
-    'litefin:serverUrl', 'litefin:deviceId', 'litefin:activeUserId',
-    'litefin:serverSessions', 'litefin:sessions', 'litefin:serverNames',
-    'litefin:accessToken', 'litefin:userId', 'app_platform'
+    'litefin:serverUrl',
+    'litefin:deviceId',
+    'litefin:activeUserId',
+    'litefin:serverSessions',
+    'litefin:sessions',
+    'litefin:serverNames',
+    'litefin:accessToken',
+    'litefin:userId',
+    'app_platform'
 ];
 
 /**
@@ -34,7 +40,11 @@ const EXCLUDED_BACKUP_KEYS = [
 function serializeBackupPayload() {
     const backupData = {};
     for (const key of storage.keys()) {
-        if (!EXCLUDED_BACKUP_KEYS.includes(key) && !key.startsWith('serverPlugin:available:') && !key.startsWith('litefin:user_settings_')) {
+        if (
+            !EXCLUDED_BACKUP_KEYS.includes(key) &&
+            !key.startsWith('serverPlugin:available:') &&
+            !key.startsWith('litefin:user_settings_')
+        ) {
             const value = storage.getItem(key);
             if (value !== null) backupData[key] = value;
         }
@@ -78,11 +88,15 @@ export class BackupTab {
 
                 <div id="backup-actions-container"></div>
 
-                ${isPerUser ? `
+                ${
+                    isPerUser
+                        ? `
                 <div class="setting-item" style="margin-top: 40px; border-top: 1px solid var(--jf-divider); padding-top: 40px;">
                     <div class="setting-label"><span class="setting-name" data-i18n="LabelResetUserToGlobal">${i18n.t('LabelResetUserToGlobal') || 'Reset Profile Settings to Global'}</span><span class="setting-description" data-i18n="LabelResetUserToGlobalDescription">${i18n.t('LabelResetUserToGlobalDescription') || 'Discard all custom settings for this profile and copy the current global settings.'}</span></div>
                     <div class="setting-control"><button class="btn btn-secondary btn-small focusable" id="btn-reset-user-to-global" tabindex="0" data-focusable="true">${i18n.t('ButtonResetToGlobal') || 'Reset to Global'}</button></div>
-                </div>` : ''}
+                </div>`
+                        : ''
+                }
 
                 <div class="setting-item" style="${isPerUser ? 'margin-top: 20px;' : 'margin-top: 40px; border-top: 1px solid var(--jf-divider); padding-top: 40px;'}">
                     <div class="setting-label"><span class="setting-name" data-i18n="LabelResetSettings">${i18n.t('LabelResetSettings') || 'Reset All Settings'}</span><span class="setting-description" data-i18n="LabelResetSettingsDescription">${i18n.t('LabelResetSettingsDescription') || 'Restore all application and player settings to their default values. This will not sign you out.'}</span></div>
@@ -96,7 +110,10 @@ export class BackupTab {
         if (!root) return;
         const addListener = (selector, event, handler) => {
             const el = root.querySelector(selector);
-            if (el) { el.addEventListener(event, handler); this._listeners.push({ el, event, handler }); }
+            if (el) {
+                el.addEventListener(event, handler);
+                this._listeners.push({ el, event, handler });
+            }
         };
 
         addListener('#toggle-settings-per-user', 'click', () => {
@@ -147,7 +164,9 @@ export class BackupTab {
         try {
             msgEl.innerText = i18n.t('CheckingBackupStatus') || 'Checking server for settings backup...';
             if (!(await api.isLitefinPluginAvailable(true))) {
-                msgEl.innerText = i18n.t('BackupPluginError') || 'Server backup plugin is not available. Please ensure the Litefin backup plugin is installed on your Jellyfin server.';
+                msgEl.innerText =
+                    i18n.t('BackupPluginError') ||
+                    'Server backup plugin is not available. Please ensure the Litefin backup plugin is installed on your Jellyfin server.';
                 const sc = target.querySelector('#backup-select-container');
                 const ac = target.querySelector('#backup-actions-container');
                 if (sc) sc.innerHTML = '';
@@ -157,13 +176,18 @@ export class BackupTab {
 
             const backups = await api.get('/Litefin/Backup');
             this.backupsList = (backups || []).sort((a, b) => new Date(b.DateCreated) - new Date(a.DateCreated));
-            msgEl.innerText = this.backupsList.length > 0 ? `Found ${this.backupsList.length} settings backup(s) on the server.` : (i18n.t('NoBackupFound') || 'No settings backup found on the server.');
+            msgEl.innerText =
+                this.backupsList.length > 0
+                    ? `Found ${this.backupsList.length} settings backup(s) on the server.`
+                    : i18n.t('NoBackupFound') || 'No settings backup found on the server.';
 
             if (!this._selectedBackupId) this._selectedBackupId = 'new';
             this.updateBackupTabUI(target);
         } catch (error) {
             log.error('Failed to get backups list:', error);
-            msgEl.innerText = i18n.t('BackupPluginError') || 'Server backup plugin is not available. Please ensure the Litefin backup plugin is installed on your Jellyfin server.';
+            msgEl.innerText =
+                i18n.t('BackupPluginError') ||
+                'Server backup plugin is not available. Please ensure the Litefin backup plugin is installed on your Jellyfin server.';
             const sc = target.querySelector('#backup-select-container');
             const ac = target.querySelector('#backup-actions-container');
             if (sc) sc.innerHTML = '';
@@ -189,7 +213,12 @@ export class BackupTab {
             const platformMap = { web: 'Web', tizen: 'Tizen', webos: 'WebOS' };
             const infoSuffix = b.Platform ? `${dateStr}, ${platformMap[b.Platform] || b.Platform}` : dateStr;
             const isFallback = !b.Name || b.Name.trim() === '' || b.Name.startsWith(device);
-            options.push({ value: b.Id, label: isFallback ? `${device} - ${b.Username} (${infoSuffix})` : `${b.Name} - ${b.Username} (${infoSuffix})` });
+            options.push({
+                value: b.Id,
+                label: isFallback
+                    ? `${device} - ${b.Username} (${infoSuffix})`
+                    : `${b.Name} - ${b.Username} (${infoSuffix})`
+            });
         });
 
         if (this.page && typeof this.page._renderDropdown === 'function') {
@@ -200,14 +229,19 @@ export class BackupTab {
         if (selectBtn) {
             selectBtn.onclick = () => {
                 if (this.page && typeof this.page._renderSelectionModal === 'function') {
-                    this.page._renderSelectionModal(i18n.t('SelectBackup') || 'Select Backup', options, currentSelectedVal, (val) => {
-                        this._selectedBackupId = val;
-                        this.updateBackupTabUI(target);
-                        setTimeout(() => {
-                            const btn = target.querySelector('#litefin-backup-select-btn');
-                            if (btn) focusManager.focusElement(btn);
-                        }, 50);
-                    });
+                    this.page._renderSelectionModal(
+                        i18n.t('SelectBackup') || 'Select Backup',
+                        options,
+                        currentSelectedVal,
+                        (val) => {
+                            this._selectedBackupId = val;
+                            this.updateBackupTabUI(target);
+                            setTimeout(() => {
+                                const btn = target.querySelector('#litefin-backup-select-btn');
+                                if (btn) focusManager.focusElement(btn);
+                            }, 50);
+                        }
+                    );
                 }
             };
         }
@@ -225,7 +259,11 @@ export class BackupTab {
         } else {
             if (nameInputContainer) nameInputContainer.style.display = 'none';
             const selectedBackup = backups.find((b) => b.Id === currentSelectedVal);
-            if (!selectedBackup) { this._selectedBackupId = 'new'; this.updateBackupTabUI(target); return; }
+            if (!selectedBackup) {
+                this._selectedBackupId = 'new';
+                this.updateBackupTabUI(target);
+                return;
+            }
 
             const isOwner = selectedBackup.UserId === api.userId;
             actionsContainer.innerHTML = `
@@ -233,7 +271,9 @@ export class BackupTab {
                     <div class="setting-label"><span class="setting-name">${i18n.t('LabelRestore') || 'Restore App Settings'}</span><span class="setting-description">${i18n.t('RestoreSettingsDescription') || 'Restore settings from the server backup and reload the application.'}</span></div>
                     <div class="setting-control"><button class="btn btn-secondary btn-small focusable" id="btn-restore-now" tabindex="0" data-focusable="true">${i18n.t('ButtonRestore') || 'Restore Settings'}</button></div>
                 </div>
-                ${isOwner ? `
+                ${
+                    isOwner
+                        ? `
                 <div class="setting-item">
                     <div class="setting-label"><span class="setting-name">Overwrite Backup</span><span class="setting-description">Update this backup snapshot with your current device settings.</span></div>
                     <div class="setting-control"><button class="btn btn-secondary btn-small focusable" id="btn-overwrite-now" tabindex="0" data-focusable="true">${i18n.t('Overwrite') || 'Overwrite'}</button></div>
@@ -241,16 +281,28 @@ export class BackupTab {
                 <div class="setting-item">
                     <div class="setting-label"><span class="setting-name">${i18n.t('LabelDelete') || 'Delete Backup'}</span><span class="setting-description">${i18n.t('DeleteBackupDescription') || 'Completely remove the settings backup from the Jellyfin server.'}</span></div>
                     <div class="setting-control"><button class="btn btn-danger btn-small focusable" id="btn-delete-backup" tabindex="0" data-focusable="true">${i18n.t('ButtonDelete') || 'Delete'}</button></div>
-                </div>` : ''}
+                </div>`
+                        : ''
+                }
             `;
 
             const btnRestore = actionsContainer.querySelector('#btn-restore-now');
             const btnOverwrite = actionsContainer.querySelector('#btn-overwrite-now');
             const btnDelete = actionsContainer.querySelector('#btn-delete-backup');
 
-            if (btnRestore) btnRestore.onclick = () => this.modals.showRestoreConfirmation(selectedBackup, (rec) => this.handleRestoreNow(rec));
-            if (btnOverwrite && isOwner) btnOverwrite.onclick = () => this.modals.showOverwriteConfirmation(selectedBackup, (rec) => this.handleOverwriteBackup(rec, target));
-            if (btnDelete && isOwner) btnDelete.onclick = () => this.modals.showDeleteBackupConfirmation(selectedBackup, (rec) => this.handleDeleteBackup(rec, target));
+            if (btnRestore)
+                btnRestore.onclick = () =>
+                    this.modals.showRestoreConfirmation(selectedBackup, (rec) => this.handleRestoreNow(rec));
+            if (btnOverwrite && isOwner)
+                btnOverwrite.onclick = () =>
+                    this.modals.showOverwriteConfirmation(selectedBackup, (rec) =>
+                        this.handleOverwriteBackup(rec, target)
+                    );
+            if (btnDelete && isOwner)
+                btnDelete.onclick = () =>
+                    this.modals.showDeleteBackupConfirmation(selectedBackup, (rec) =>
+                        this.handleDeleteBackup(rec, target)
+                    );
         }
 
         focusManager.invalidateCache('settings-content');
@@ -261,7 +313,10 @@ export class BackupTab {
         const target = root || (this.page ? this.page.element : null) || document;
         const btn = target.querySelector('#btn-backup-now');
         const origText = btn ? btn.innerText : 'Back Up Now';
-        if (btn) { btn.innerText = i18n.t('BackingUp') || 'Backing Up...'; btn.disabled = true; }
+        if (btn) {
+            btn.innerText = i18n.t('BackingUp') || 'Backing Up...';
+            btn.disabled = true;
+        }
 
         try {
             const inputNameEl = target.querySelector('#input-backup-name');
@@ -279,14 +334,20 @@ export class BackupTab {
             const msgEl = target.querySelector('#backup-status-message');
             if (msgEl) msgEl.innerText = i18n.t('BackupFailed') || 'Backup failed. Please verify plugin connectivity.';
         } finally {
-            if (btn) { btn.innerText = origText; btn.disabled = false; }
+            if (btn) {
+                btn.innerText = origText;
+                btn.disabled = false;
+            }
         }
     }
 
     async handleOverwriteBackup(backupRecord, root) {
         const target = root || (this.page ? this.page.element : null) || document;
         const btn = target.querySelector('#btn-overwrite-now');
-        if (btn) { btn.disabled = true; btn.style.opacity = '0.5'; }
+        if (btn) {
+            btn.disabled = true;
+            btn.style.opacity = '0.5';
+        }
 
         try {
             await this._sendBackup({ Id: backupRecord.Id, Name: backupRecord.Name });
@@ -294,7 +355,10 @@ export class BackupTab {
         } catch (error) {
             log.error('Overwrite backup failed:', error);
         } finally {
-            if (btn) { btn.disabled = false; btn.style.opacity = ''; }
+            if (btn) {
+                btn.disabled = false;
+                btn.style.opacity = '';
+            }
         }
     }
 
@@ -310,7 +374,14 @@ export class BackupTab {
             storage.removeItem('image_preset');
             storage.removeItem('image_details_preset');
 
-            const keysToClear = storage.keys().filter((k) => k.startsWith('litefin:') && !EXCLUDED_BACKUP_KEYS.includes(k) && !k.startsWith('litefin:user_settings_'));
+            const keysToClear = storage
+                .keys()
+                .filter(
+                    (k) =>
+                        k.startsWith('litefin:') &&
+                        !EXCLUDED_BACKUP_KEYS.includes(k) &&
+                        !k.startsWith('litefin:user_settings_')
+                );
             for (const key of keysToClear) storage.removeItem(key);
 
             for (const [key, value] of Object.entries(restoredData)) storage.setItem(key, value);

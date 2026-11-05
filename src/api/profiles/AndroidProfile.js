@@ -58,11 +58,17 @@ function detectHardwareVideoCodecs() {
     // and mobile devices that do not expose dedicated MPEG-2 or VC-1 decoders.
     // -------------------------------------------------------------------------
     const isTv =
-        (typeof window !== 'undefined' && typeof window.LitefinAndroid?.isTv === 'function' && !!window.LitefinAndroid.isTv()) ||
-        (typeof window !== 'undefined' && typeof window.AndroidBridge?.isTv === 'function' && !!window.AndroidBridge.isTv()) ||
+        (typeof window !== 'undefined' &&
+            typeof window.LitefinAndroid?.isTv === 'function' &&
+            !!window.LitefinAndroid.isTv()) ||
+        (typeof window !== 'undefined' &&
+            typeof window.AndroidBridge?.isTv === 'function' &&
+            !!window.AndroidBridge.isTv()) ||
         (typeof navigator !== 'undefined' &&
             navigator.userAgent &&
-            /Android.*(TV|Television|GoogleTV|Large Screen|SmartTV|BRAVIA|AFT|Nexus Player|MIBOX|SHIELD)/i.test(navigator.userAgent)) ||
+            /Android.*(TV|Television|GoogleTV|Large Screen|SmartTV|BRAVIA|AFT|Nexus Player|MIBOX|SHIELD)/i.test(
+                navigator.userAgent
+            )) ||
         false;
 
     // Return safe baseline ensuring modern codecs decode while legacy ones transcode
@@ -151,11 +157,17 @@ function detectHdrCapabilities() {
     }
 
     const isTv =
-        (typeof window !== 'undefined' && typeof window.LitefinAndroid?.isTv === 'function' && !!window.LitefinAndroid.isTv()) ||
-        (typeof window !== 'undefined' && typeof window.AndroidBridge?.isTv === 'function' && !!window.AndroidBridge.isTv()) ||
+        (typeof window !== 'undefined' &&
+            typeof window.LitefinAndroid?.isTv === 'function' &&
+            !!window.LitefinAndroid.isTv()) ||
+        (typeof window !== 'undefined' &&
+            typeof window.AndroidBridge?.isTv === 'function' &&
+            !!window.AndroidBridge.isTv()) ||
         (typeof navigator !== 'undefined' &&
             navigator.userAgent &&
-            /Android.*(TV|Television|GoogleTV|Large Screen|SmartTV|BRAVIA|AFT|Nexus Player|MIBOX|SHIELD)/i.test(navigator.userAgent)) ||
+            /Android.*(TV|Television|GoogleTV|Large Screen|SmartTV|BRAVIA|AFT|Nexus Player|MIBOX|SHIELD)/i.test(
+                navigator.userAgent
+            )) ||
         false;
 
     // Detect HDR display capabilities via media queries when bridge is unavailable

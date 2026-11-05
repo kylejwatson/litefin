@@ -131,7 +131,7 @@ export async function quickPlayItem(itemOrId) {
         }
     }
 
-    const startPositionTicks = resume ? (itemToPlay.UserData?.PlaybackPositionTicks || 0) : 0;
+    const startPositionTicks = resume ? itemToPlay.UserData?.PlaybackPositionTicks || 0 : 0;
     eventBus.emit('player:play', { item: itemToPlay, resume, startPositionTicks, fromBrowse: true, backdropUrl });
     return true;
 }

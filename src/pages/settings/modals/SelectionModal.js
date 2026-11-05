@@ -212,41 +212,45 @@ export class SelectionModal {
 
             // Register spatial navigation sections
             if (overlay.querySelector('#modal-lang-filter-pills')) {
-                this.page.registerFocusSection('modal-filter-pills', overlay.querySelector('#modal-lang-filter-pills'), {
-                    orientation: 'horizontal',
-                    leaveDown: 'modal-options',
-                    onMove: (direction) => {
-                        const isRtl = document.documentElement.getAttribute('dir') === 'rtl';
-                        if (direction === 'left') {
-                            const targetFilter = isRtl ? 'all' : 'favorites';
-                            if (activeFilter !== targetFilter) {
-                                activeFilter = targetFilter;
-                                renderModalContent();
-                                setTimeout(() => {
-                                    const pill = overlay.querySelector(
-                                        `.modal-filter-pill[data-filter="${targetFilter}"]`
-                                    );
-                                    if (pill) focusManager.focusElement(pill);
-                                }, 50);
-                                return true;
+                this.page.registerFocusSection(
+                    'modal-filter-pills',
+                    overlay.querySelector('#modal-lang-filter-pills'),
+                    {
+                        orientation: 'horizontal',
+                        leaveDown: 'modal-options',
+                        onMove: (direction) => {
+                            const isRtl = document.documentElement.getAttribute('dir') === 'rtl';
+                            if (direction === 'left') {
+                                const targetFilter = isRtl ? 'all' : 'favorites';
+                                if (activeFilter !== targetFilter) {
+                                    activeFilter = targetFilter;
+                                    renderModalContent();
+                                    setTimeout(() => {
+                                        const pill = overlay.querySelector(
+                                            `.modal-filter-pill[data-filter="${targetFilter}"]`
+                                        );
+                                        if (pill) focusManager.focusElement(pill);
+                                    }, 50);
+                                    return true;
+                                }
+                            } else if (direction === 'right') {
+                                const targetFilter = isRtl ? 'favorites' : 'all';
+                                if (activeFilter !== targetFilter) {
+                                    activeFilter = targetFilter;
+                                    renderModalContent();
+                                    setTimeout(() => {
+                                        const pill = overlay.querySelector(
+                                            `.modal-filter-pill[data-filter="${targetFilter}"]`
+                                        );
+                                        if (pill) focusManager.focusElement(pill);
+                                    }, 50);
+                                    return true;
+                                }
                             }
-                        } else if (direction === 'right') {
-                            const targetFilter = isRtl ? 'favorites' : 'all';
-                            if (activeFilter !== targetFilter) {
-                                activeFilter = targetFilter;
-                                renderModalContent();
-                                setTimeout(() => {
-                                    const pill = overlay.querySelector(
-                                        `.modal-filter-pill[data-filter="${targetFilter}"]`
-                                    );
-                                    if (pill) focusManager.focusElement(pill);
-                                }, 50);
-                                return true;
-                            }
+                            return false;
                         }
-                        return false;
                     }
-                });
+                );
             }
 
             this.page.registerFocusSection('modal-options', overlay.querySelector('.modal-options'), {

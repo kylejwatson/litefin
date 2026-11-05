@@ -53,16 +53,13 @@ export class PerformanceTab {
         const savedReloadPref = storage.getItem('pref:reloadOnResume');
         const reloadOnResumeEnabled = savedReloadPref !== null ? savedReloadPref === 'true' : isTv;
 
-        const vertScrollMode =
-            storage.getItem('pref:verticalScrollMode') || 'native';
+        const vertScrollMode = storage.getItem('pref:verticalScrollMode') || 'native';
         /*
          * Horizontal scrolling mode resolution.
          * Defaults to 'native' (Smooth) across all environments.
          * Eliminates platform-specific fragmentation so all targets share smooth scrolling.
          */
-        const horizScrollMode =
-            storage.getItem('pref:horizontalScrollMode') ||
-            'native';
+        const horizScrollMode = storage.getItem('pref:horizontalScrollMode') || 'native';
         /*
          * Vertical scroll smoothing duration resolution.
          * Defaults to 'smooth' for fluid navigation speed and duration.

@@ -400,7 +400,7 @@ class PluginWidgetHost {
             // When more than 2 segments are visible concurrently, shift the stack upward
             // so all items remain cleanly within safe view without colliding with controls.
             const baseShiftEm = count > 2 ? (count - 2) * 4.4 : 0;
-            const netOffsetEm = (idx * 4.4) - baseShiftEm;
+            const netOffsetEm = idx * 4.4 - baseShiftEm;
 
             // Update both custom property and inline style for resilient cross-engine layout
             entry.el.style.setProperty('--widget-stack-index', String(idx));
@@ -534,8 +534,7 @@ class PluginWidgetHost {
                  * ============================================================
                  */
                 const isModalOrMenuOpen =
-                    this._osd &&
-                    (this._osd.isModalOpen || (this._osd.activeMenu && this._osd.activeMenu.isVisible));
+                    this._osd && (this._osd.isModalOpen || (this._osd.activeMenu && this._osd.activeMenu.isVisible));
                 const isUpNextActive = this._osd && this._osd.upNextDialog?.isVisible;
                 const isUserSeeking = this._osd && this._osd._currentFocusRow === 2;
 

@@ -421,8 +421,7 @@ class DebugOverlay {
         // Cap uploaded dump to the most recent 2,500 lines.
         // Prevents multi-megabyte payloads that cause socket timeouts on TV network stacks
         // while preserving ample history for diagnosing app behavior and playback issues.
-        const linesToDump =
-            this._uploadBuffer.length > 2500 ? this._uploadBuffer.slice(-2500) : this._uploadBuffer;
+        const linesToDump = this._uploadBuffer.length > 2500 ? this._uploadBuffer.slice(-2500) : this._uploadBuffer;
 
         return header + linesToDump.join('\r\n');
     }

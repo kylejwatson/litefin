@@ -35,9 +35,7 @@ export function getCustomCollectionsLabel() {
         const count = Array.isArray(list) ? list.length : 0;
 
         // Return localized badge counter or fallback to None Selected
-        return count > 0
-            ? i18n.t('CollectionsSelected', [count])
-            : i18n.t('NoCollectionsSelected') || 'None Selected';
+        return count > 0 ? i18n.t('CollectionsSelected', [count]) : i18n.t('NoCollectionsSelected') || 'None Selected';
     } catch (_) {
         return i18n.t('NoCollectionsSelected') || 'None Selected';
     }
@@ -196,9 +194,7 @@ export class CustomCollectionsModal {
             clearBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 this._selectedMap.clear();
-                overlay
-                    .querySelectorAll('.custom-col-list .check-btn')
-                    .forEach((b) => b.classList.remove('selected'));
+                overlay.querySelectorAll('.custom-col-list .check-btn').forEach((b) => b.classList.remove('selected'));
                 this._saveSelection(onUpdate);
             });
         }

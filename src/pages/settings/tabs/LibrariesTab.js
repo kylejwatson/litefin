@@ -283,7 +283,10 @@ export class LibrariesTab {
                                         type: 'info'
                                     });
                                 } catch (refreshErr) {
-                                    log.error(`Failed to refresh metadata for library ${libName} (${libId}):`, refreshErr);
+                                    log.error(
+                                        `Failed to refresh metadata for library ${libName} (${libId}):`,
+                                        refreshErr
+                                    );
                                     toast.show(`${i18n.t('RefreshFailed') || 'Refresh failed for'} ${libName}`, 4000, {
                                         type: 'error'
                                     });

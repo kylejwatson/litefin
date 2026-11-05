@@ -55,7 +55,8 @@ export class PluginsTab {
 
         // Build toggle row markup for each installed plugin
         const rows = plugins
-            .map((p) => `
+            .map(
+                (p) => `
             <div class="setting-item">
                 <div class="setting-label">
                     <span class="setting-name">${p.name} <span class="plugin-version">v${p.version}</span> ${statusBadge(p)}</span>
@@ -66,7 +67,9 @@ export class PluginsTab {
                     <button class="toggle-switch ${p.enabled ? 'active' : ''}" data-plugin-id="${p.id}" id="plugin-toggle-${p.id}" tabindex="0"></button>
                 </div>
             </div>
-        `).join('');
+        `
+            )
+            .join('');
 
         const content =
             plugins.length > 0

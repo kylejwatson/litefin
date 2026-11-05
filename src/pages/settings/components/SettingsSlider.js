@@ -120,9 +120,7 @@ export class SettingsSlider {
 
                 // Persist updated numeric value into PlayerSettings storage
                 if (key) {
-                    const parsedValue = FLOAT_SETTING_KEYS.has(key)
-                        ? parseFloat(value)
-                        : parseInt(value, 10);
+                    const parsedValue = FLOAT_SETTING_KEYS.has(key) ? parseFloat(value) : parseInt(value, 10);
                     PlayerSettings.set(key, parsedValue);
                 }
             });

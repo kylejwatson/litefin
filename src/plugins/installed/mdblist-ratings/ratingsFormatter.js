@@ -538,7 +538,6 @@ export function filterAndOrderRatings(ratings, settings = null) {
     return ordered;
 }
 
-
 /**
  * ============================================================================
  * Provider Link Resolution & Deep-Linking Helpers
@@ -604,7 +603,7 @@ export function buildProviderHref(source, rating, context = {}) {
         const tmdbId = ids.tmdb || ids.Tmdb || context?.tmdbId || null;
 
         // Extract raw URL string from rating item
-        const rawUrl = rating ? (rating.url || rating.Url) : null;
+        const rawUrl = rating ? rating.url || rating.Url : null;
         const normalizedUrl = normalizeLeadingSlash(rawUrl);
 
         // Content type formatting helpers
@@ -664,7 +663,7 @@ export function buildProviderHref(source, rating, context = {}) {
                     return `https://www.themoviedb.org/tv/${String(tmdbId).trim()}/season/${String(seasonNumber).trim()}`;
                 }
                 // Series vs Movie link resolution
-                const kind = (contentType === 'show' || contentType === 'series') ? 'tv' : 'movie';
+                const kind = contentType === 'show' || contentType === 'series' ? 'tv' : 'movie';
                 return `https://www.themoviedb.org/${kind}/${String(tmdbId).trim()}`;
             }
             return null;
@@ -690,7 +689,7 @@ export function buildProviderHref(source, rating, context = {}) {
                 if (contentType === 'season' && seasonNumber != null) {
                     return `https://trakt.tv/shows/${cleanImdb}/seasons/${String(seasonNumber).trim()}`;
                 }
-                const kind = (contentType === 'show' || contentType === 'series') ? 'shows' : 'movies';
+                const kind = contentType === 'show' || contentType === 'series' ? 'shows' : 'movies';
                 return `https://trakt.tv/${kind}/${cleanImdb}`;
             }
             return null;
@@ -720,7 +719,7 @@ export function buildProviderHref(source, rating, context = {}) {
                 return `https://www.metacritic.com${normalizedUrl}`;
             }
             // Infer route prefix from media content type
-            const prefix = (contentType === 'show' || contentType === 'series') ? '/tv' : '/movie';
+            const prefix = contentType === 'show' || contentType === 'series' ? '/tv' : '/movie';
             return `https://www.metacritic.com${prefix}${normalizedUrl}`;
         }
 
@@ -781,14 +780,20 @@ export function buildProviderHref(source, rating, context = {}) {
         // --------------------------------------------------------------------
         // 12. WhatsOn French Providers (SensCritique, AlloCine, BetaSeries)
         // --------------------------------------------------------------------
-        if (canonical === 'senscritique' || canonical === 'allocine_critics' || canonical === 'allocine_users' || canonical === 'betaseries') {
+        if (
+            canonical === 'senscritique' ||
+            canonical === 'allocine_critics' ||
+            canonical === 'allocine_users' ||
+            canonical === 'betaseries'
+        ) {
             if (!rawUrl) return null;
             const s = String(rawUrl).trim();
             if (!s) return null;
             if (s.indexOf('http://') === 0 || s.indexOf('https://') === 0) return s;
             const cleanPath = s.replace(/^\/+/, '');
             if (canonical === 'senscritique') return `https://www.senscritique.com/${cleanPath}`;
-            if (canonical === 'allocine_critics' || canonical === 'allocine_users') return `https://www.allocine.fr/${cleanPath}`;
+            if (canonical === 'allocine_critics' || canonical === 'allocine_users')
+                return `https://www.allocine.fr/${cleanPath}`;
             if (canonical === 'betaseries') return `https://www.betaseries.com/${cleanPath}`;
             return null;
         }

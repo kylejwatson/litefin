@@ -110,7 +110,16 @@ export class DebugTab {
                         <span class="setting-name" data-i18n="OverlayWidth">${i18n.t('OverlayWidth')}</span>
                         <span class="setting-description" data-i18n="OverlayWidthDescription">${i18n.t('OverlayWidthDescription')}</span>
                     </div>
-                    <div class="setting-control">${this._renderDropdown('debug-width-select', [{ value: 'small', label: i18n.t('Small') }, { value: 'medium', label: i18n.t('Medium') }, { value: 'large', label: i18n.t('Large') }, { value: 'full', label: i18n.t('FullScreen') }], debugOverlay.Width || 'small')}</div>
+                    <div class="setting-control">${this._renderDropdown(
+                        'debug-width-select',
+                        [
+                            { value: 'small', label: i18n.t('Small') },
+                            { value: 'medium', label: i18n.t('Medium') },
+                            { value: 'large', label: i18n.t('Large') },
+                            { value: 'full', label: i18n.t('FullScreen') }
+                        ],
+                        debugOverlay.Width || 'small'
+                    )}</div>
                 </div>
 
                 <!-- Debug Overlay Height Dimension -->
@@ -119,7 +128,16 @@ export class DebugTab {
                         <span class="setting-name" data-i18n="OverlayHeight">${i18n.t('OverlayHeight')}</span>
                         <span class="setting-description" data-i18n="OverlayHeightDescription">${i18n.t('OverlayHeightDescription')}</span>
                     </div>
-                    <div class="setting-control">${this._renderDropdown('debug-height-select', [{ value: 'small', label: i18n.t('Small') }, { value: 'medium', label: i18n.t('Medium') }, { value: 'large', label: i18n.t('Large') }, { value: 'full', label: i18n.t('FullScreen') }], debugOverlay.Height || 'small')}</div>
+                    <div class="setting-control">${this._renderDropdown(
+                        'debug-height-select',
+                        [
+                            { value: 'small', label: i18n.t('Small') },
+                            { value: 'medium', label: i18n.t('Medium') },
+                            { value: 'large', label: i18n.t('Large') },
+                            { value: 'full', label: i18n.t('FullScreen') }
+                        ],
+                        debugOverlay.Height || 'small'
+                    )}</div>
                 </div>
 
                 <!-- Debug Overlay Screen Position Anchor -->
@@ -128,7 +146,16 @@ export class DebugTab {
                         <span class="setting-name" data-i18n="OverlayPosition">${i18n.t('OverlayPosition')}</span>
                         <span class="setting-description" data-i18n="OverlayPositionDescription">${i18n.t('OverlayPositionDescription')}</span>
                     </div>
-                    <div class="setting-control">${this._renderDropdown('debug-position-select', [{ value: 'top-left', label: i18n.t('TopLeft') }, { value: 'top-right', label: i18n.t('TopRight') }, { value: 'bottom-left', label: i18n.t('BottomLeft') }, { value: 'bottom-right', label: i18n.t('BottomRight') }], debugOverlay.Position || 'bottom-right')}</div>
+                    <div class="setting-control">${this._renderDropdown(
+                        'debug-position-select',
+                        [
+                            { value: 'top-left', label: i18n.t('TopLeft') },
+                            { value: 'top-right', label: i18n.t('TopRight') },
+                            { value: 'bottom-left', label: i18n.t('BottomLeft') },
+                            { value: 'bottom-right', label: i18n.t('BottomRight') }
+                        ],
+                        debugOverlay.Position || 'bottom-right'
+                    )}</div>
                 </div>
 
                 <!-- Storage Management Section -->
@@ -180,12 +207,17 @@ export class DebugTab {
                         <div class="setting-label"><span class="setting-name" data-i18n="DisableAllFilters">${i18n.t('DisableAllFilters')}</span></div>
                         <div class="setting-control"><button class="btn btn-option" id="btn-disable-all-filters" tabindex="0" style="width: auto; min-width: 100px;" data-i18n="Disable">${i18n.t('Disable')}</button></div>
                     </div>
-                    ${debugOverlay.getKnownModules().map((module) => `
+                    ${debugOverlay
+                        .getKnownModules()
+                        .map(
+                            (module) => `
                         <div class="setting-item compact">
                             <div class="setting-label"><span class="setting-name">${module}</span></div>
                             <div class="setting-control"><button class="toggle-switch module-filter-toggle ${debugOverlay.isModuleEnabled(module) ? 'active' : ''}" data-module="${module}" tabindex="0"></button></div>
                         </div>
-                    `).join('')}
+                    `
+                        )
+                        .join('')}
                 </div>
             </div>
         `;
@@ -295,7 +327,9 @@ export class DebugTab {
             if (!btn) return;
             const removed = storage.clearByPrefix('libThumb:');
             btn.textContent = removed > 0 ? i18n.t('Done') : i18n.t('AlreadyEmpty');
-            setTimeout(() => { btn.textContent = i18n.t('Clear'); }, 2000);
+            setTimeout(() => {
+                btn.textContent = i18n.t('Clear');
+            }, 2000);
             this.updateStorageUsageDisplay(root);
         });
 
@@ -306,7 +340,9 @@ export class DebugTab {
             const removed = storage.clearByPrefix('debug_filter_');
             if (logger._disabledModules) logger._disabledModules.clear();
             btn.textContent = removed > 0 ? i18n.t('Done') : i18n.t('AlreadyEmpty');
-            setTimeout(() => { btn.textContent = i18n.t('Clear'); }, 2000);
+            setTimeout(() => {
+                btn.textContent = i18n.t('Clear');
+            }, 2000);
             this.updateStorageUsageDisplay(root);
         });
 
@@ -320,7 +356,9 @@ export class DebugTab {
             if (logger._disabledModules) logger._disabledModules.clear();
             btn.disabled = false;
             btn.textContent = removed > 0 ? i18n.t('Done') : i18n.t('AlreadyEmpty');
-            setTimeout(() => { btn.textContent = i18n.t('ClearAll'); }, 2500);
+            setTimeout(() => {
+                btn.textContent = i18n.t('ClearAll');
+            }, 2500);
             this.updateStorageUsageDisplay(root);
         });
 

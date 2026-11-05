@@ -918,11 +918,7 @@ class CardRenderer {
         const hasPlaybackTicks = item.UserData?.PlaybackPositionTicks && item.RunTimeTicks;
         const hasPlayedPercentage = item.UserData?.PlayedPercentage != null && item.UserData.PlayedPercentage > 0;
 
-        if (
-            !hideProgressBar &&
-            !CardRenderer.isGame(item) &&
-            (hasPlaybackTicks || hasPlayedPercentage)
-        ) {
+        if (!hideProgressBar && !CardRenderer.isGame(item) && (hasPlaybackTicks || hasPlayedPercentage)) {
             // Calculate playback percentage completed and clamp to integer
             const rawProgress = hasPlayedPercentage
                 ? item.UserData.PlayedPercentage

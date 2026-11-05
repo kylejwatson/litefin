@@ -146,7 +146,8 @@ export class SettingsDropdownDispatcher {
             'sidebar-selected-color-select': () => layoutManager.setSidebarSelectedColor(newValue),
             'sidebar-unselected-color-select': () => layoutManager.setSidebarUnselectedColor(newValue),
             'sidebar-logo-color-select': () => layoutManager.setSidebarLogoColor(newValue),
-            'sidebar-icon-shadows-select': () => layoutManager.setSidebarIconShadows(newValue === 'shadow' || newValue === 'true'),
+            'sidebar-icon-shadows-select': () =>
+                layoutManager.setSidebarIconShadows(newValue === 'shadow' || newValue === 'true'),
             'osd-button-style-select': () => layoutManager.setOsdButtonStyle(newValue),
             'osd-focus-border-style-select': () => layoutManager.setOsdFocusBorderStyle(newValue),
             'osd-button-shape-select': () => layoutManager.setOsdButtonShape(newValue),
@@ -212,9 +213,14 @@ export class SettingsDropdownDispatcher {
 
         // Trigger hard reload for structural application layout changes
         const RELOAD_KEYS = new Set([
-            'pref:mediaRowsLayout', 'pref:loginPageLayout', 'layout_direction',
-            'app_language', 'pref:classicCardSizeScale', 'pref:modernCardSizeScale',
-            'pref:expandedCardSizeScale', 'pref:modernPostersCardSizeScale'
+            'pref:mediaRowsLayout',
+            'pref:loginPageLayout',
+            'layout_direction',
+            'app_language',
+            'pref:classicCardSizeScale',
+            'pref:modernCardSizeScale',
+            'pref:expandedCardSizeScale',
+            'pref:modernPostersCardSizeScale'
         ]);
         if (RELOAD_KEYS.has(settingConfig.key) && typeof this.page._triggerHardReload === 'function') {
             this.page._triggerHardReload();
@@ -226,10 +232,12 @@ export class SettingsDropdownDispatcher {
 
         if (id === 'screensaver-type-select') {
             const isBackdrop = newValue === 'backdrop';
-            ['screensaver-dim-item', 'screensaver-hide-text-item', 'screensaver-include-music-item'].forEach((itemId) => {
-                const el = document.getElementById(itemId);
-                if (el) el.classList.toggle('hidden', !isBackdrop);
-            });
+            ['screensaver-dim-item', 'screensaver-hide-text-item', 'screensaver-include-music-item'].forEach(
+                (itemId) => {
+                    const el = document.getElementById(itemId);
+                    if (el) el.classList.toggle('hidden', !isBackdrop);
+                }
+            );
             focusManager.invalidateCache('settings-content');
         }
     }
@@ -250,8 +258,11 @@ export class SettingsDropdownDispatcher {
         if (colsBtn && typeof this.page._getLibraryColumnOptionsForMode === 'function') {
             const newColOptions = this.page._getLibraryColumnOptionsForMode(newValue);
             const savedForNewMode = storage.getItem(`pref:defaultLibraryGridColumns:${newValue}`);
-            const defaultColsForMode = { poster: '7', 'small-poster': '9', thumb: '4', banner: '3', list: '1' }[newValue] || '7';
-            const selectedCol = newColOptions.some((o) => o.value === String(savedForNewMode)) ? String(savedForNewMode) : defaultColsForMode;
+            const defaultColsForMode =
+                { poster: '7', 'small-poster': '9', thumb: '4', banner: '3', list: '1' }[newValue] || '7';
+            const selectedCol = newColOptions.some((o) => o.value === String(savedForNewMode))
+                ? String(savedForNewMode)
+                : defaultColsForMode;
             colsBtn.dataset.options = JSON.stringify(newColOptions);
             colsBtn.dataset.value = selectedCol;
             const colLabel = colsBtn.querySelector('.btn-label');
@@ -329,11 +340,23 @@ export class SettingsDropdownDispatcher {
 
         // Flush hardware capabilities cache when codec parameters alter
         const CLEAR_CAPS_KEYS = new Set([
-            'maxResolution', 'maxBitrateInternet', 'pgsPlaybackMode',
-            'webosSegmentLength', 'tizenSegmentLength', 'html5SegmentLength',
-            'enableHEVC', 'enableAV1', 'enableVP9', 'enableHDR',
-            'enableDolbyVision', 'enableDts', 'enableTrueHd',
-            'enableEac3', 'enableMp2', 'transcodeAudioCodec', 'forceDirectPlay'
+            'maxResolution',
+            'maxBitrateInternet',
+            'pgsPlaybackMode',
+            'webosSegmentLength',
+            'tizenSegmentLength',
+            'html5SegmentLength',
+            'enableHEVC',
+            'enableAV1',
+            'enableVP9',
+            'enableHDR',
+            'enableDolbyVision',
+            'enableDts',
+            'enableTrueHd',
+            'enableEac3',
+            'enableMp2',
+            'transcodeAudioCodec',
+            'forceDirectPlay'
         ]);
         if (CLEAR_CAPS_KEYS.has(settingConfig.key)) {
             clearCapabilitiesCache();
@@ -368,13 +391,14 @@ export class SettingsDropdownDispatcher {
         if (id === 'subtitle-bg-select') {
             const opacityContainer = document.getElementById('subtitle-bg-opacity-container');
             if (opacityContainer) {
-                opacityContainer.style.display = (newValue === 'transparent' || newValue === 'none') ? 'none' : '';
+                opacityContainer.style.display = newValue === 'transparent' || newValue === 'none' ? 'none' : '';
                 focusManager.invalidateCache('settings-content');
             }
         }
 
         if (id === 'subtitle-position-select' || id === 'subtitle-size-select') {
-            const elId = id === 'subtitle-position-select' ? 'subtitle-custom-pos-container' : 'subtitle-custom-size-container';
+            const elId =
+                id === 'subtitle-position-select' ? 'subtitle-custom-pos-container' : 'subtitle-custom-size-container';
             const targetContainer = document.getElementById(elId);
             if (targetContainer) {
                 targetContainer.style.display = newValue === 'custom' ? '' : 'none';

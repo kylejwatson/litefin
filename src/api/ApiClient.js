@@ -713,7 +713,9 @@ export class ApiClient {
                              * If keepalive was active and threw a TypeError, fall back to a standard fetch without keepalive.
                              */
                             if (fetchOptions.keepalive && fetchErr instanceof TypeError) {
-                                log.warn(`Fetch with keepalive failed (${fetchErr.message}); retrying without keepalive...`);
+                                log.warn(
+                                    `Fetch with keepalive failed (${fetchErr.message}); retrying without keepalive...`
+                                );
                                 delete fetchOptions.keepalive;
                                 return await fetch(url, fetchOptions);
                             }
@@ -1731,7 +1733,7 @@ export class ApiClient {
             cache: 'no-store',
             headers: {
                 'Cache-Control': 'no-cache, no-store, must-revalidate',
-                'Pragma': 'no-cache',
+                Pragma: 'no-cache',
                 ...(options.headers || {})
             },
             ...options

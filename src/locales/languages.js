@@ -10,7 +10,7 @@ export const availableLanguages = [
         label: 'English',
         completeness: 100
     },
-       {
+    {
         value: 'en-gb',
         label: 'English - British',
         completeness: 100

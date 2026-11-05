@@ -1,7 +1,6 @@
 import { lazyLoader } from '../utils/LazyLoader.js';
 import { focusManager } from '../ui/FocusManager.js';
 import { eventBus } from '../core/EventBus.js';
-import { platformInfo } from '../utils/PlatformInfo.js';
 import { storage } from '../utils/StorageService.js';
 import { scrollController } from '../ui/ScrollController.js';
 import { mouseRowScroller } from '../ui/MouseRowScroller.js';
@@ -510,8 +509,7 @@ export class VirtualCardRow {
              * In GPU mode, hardware CSS translate3d owns position on .row-items-track.
              * Defaults to 'native' (Smooth) across all targets.
              */
-            const horizontalScrollMode =
-                storage.getItem('pref:horizontalScrollMode') || 'native';
+            const horizontalScrollMode = storage.getItem('pref:horizontalScrollMode') || 'native';
 
             if (horizontalScrollMode === 'native') {
                 requestAnimationFrame(() => {
@@ -729,9 +727,13 @@ export class VirtualCardRow {
                         if (!this.isExpanding) {
                             let cardWidth = this.itemWidth;
                             if (cardNode.classList.contains('landscape') && !this.isLandscape) {
-                                const baseW = (this.isModern || this.isExpanded || this.isModernPosters) ? 396 : 400;
+                                const baseW = this.isModern || this.isExpanded || this.isModernPosters ? 396 : 400;
                                 cardWidth = Math.round(baseW * (this.modernMultiplier || this.scale || 1.0));
-                            } else if (cardNode.classList.contains('square') && this.cardType !== 'square' && this.cardType !== 'artist') {
+                            } else if (
+                                cardNode.classList.contains('square') &&
+                                this.cardType !== 'square' &&
+                                this.cardType !== 'artist'
+                            ) {
                                 cardWidth = Math.round(223 * (this.modernMultiplier || this.scale || 1.0));
                             }
                             cardNode.style.width = `${cardWidth}px`;
@@ -748,9 +750,16 @@ export class VirtualCardRow {
                             const cardImage = cardNode.querySelector('.card-image');
                             if (cardImage && (this.isModern || this.isExpanded || this.isModernPosters)) {
                                 let imageHeight;
-                                if (cardNode.classList.contains('landscape') || (this.isLandscape && !cardNode.classList.contains('square'))) {
+                                if (
+                                    cardNode.classList.contains('landscape') ||
+                                    (this.isLandscape && !cardNode.classList.contains('square'))
+                                ) {
                                     imageHeight = Math.round(222.75 * (this.modernMultiplier || this.scale || 1.0));
-                                } else if (cardNode.classList.contains('square') || this.cardType === 'square' || this.cardType === 'artist') {
+                                } else if (
+                                    cardNode.classList.contains('square') ||
+                                    this.cardType === 'square' ||
+                                    this.cardType === 'artist'
+                                ) {
                                     imageHeight = Math.round(223 * (this.modernMultiplier || this.scale || 1.0));
                                 } else {
                                     imageHeight = Math.round(318 * (this.modernMultiplier || this.scale || 1.0));
@@ -872,9 +881,13 @@ export class VirtualCardRow {
                     if (!this.isExpanding) {
                         let cardWidth = this.itemWidth;
                         if (cardNode.classList.contains('landscape') && !this.isLandscape) {
-                            const baseW = (this.isModern || this.isExpanded || this.isModernPosters) ? 396 : 400;
+                            const baseW = this.isModern || this.isExpanded || this.isModernPosters ? 396 : 400;
                             cardWidth = Math.round(baseW * (this.modernMultiplier || this.scale || 1.0));
-                        } else if (cardNode.classList.contains('square') && this.cardType !== 'square' && this.cardType !== 'artist') {
+                        } else if (
+                            cardNode.classList.contains('square') &&
+                            this.cardType !== 'square' &&
+                            this.cardType !== 'artist'
+                        ) {
                             cardWidth = Math.round(223 * (this.modernMultiplier || this.scale || 1.0));
                         }
                         cardNode.style.width = `${cardWidth}px`;
@@ -891,9 +904,16 @@ export class VirtualCardRow {
                         const cardImage = cardNode.querySelector('.card-image');
                         if (cardImage && (this.isModern || this.isExpanded || this.isModernPosters)) {
                             let imageHeight;
-                            if (cardNode.classList.contains('landscape') || (this.isLandscape && !cardNode.classList.contains('square'))) {
+                            if (
+                                cardNode.classList.contains('landscape') ||
+                                (this.isLandscape && !cardNode.classList.contains('square'))
+                            ) {
                                 imageHeight = Math.round(222.75 * (this.modernMultiplier || this.scale || 1.0));
-                            } else if (cardNode.classList.contains('square') || this.cardType === 'square' || this.cardType === 'artist') {
+                            } else if (
+                                cardNode.classList.contains('square') ||
+                                this.cardType === 'square' ||
+                                this.cardType === 'artist'
+                            ) {
                                 imageHeight = Math.round(223 * (this.modernMultiplier || this.scale || 1.0));
                             } else {
                                 imageHeight = Math.round(318 * (this.modernMultiplier || this.scale || 1.0));
