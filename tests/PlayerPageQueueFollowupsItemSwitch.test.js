@@ -107,6 +107,7 @@ function createPage({ repeatMode = 'RepeatNone', live = false } = {}) {
         playQueue,
         state: { get: () => null, delete() {}, getAll: () => ({}) },
         pluginManager: { notifyPlayerStop() {} },
+        prewarmManager: { clear() {} },
         eventBus: { emit() {} },
         platformInfo: { isWeb: false, isAndroid: false },
         router: {

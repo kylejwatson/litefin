@@ -104,7 +104,7 @@ function createPage({ handOver = {} } = {}) {
         androidAdapter: { setOrientation: noop },
         SubtitleStyles: { getCurrentFontId: () => null },
         FontLoader: { loadFont: () => Promise.resolve() },
-        prewarmManager: { getPrewarmedItem: () => null },
+        prewarmManager: { getPrewarmedItem: () => null, clear: () => {} },
         PlayerSettings: { get: () => null, getAdjustedResumePositionTicks: (ticks) => ticks },
         storage: { getItem: () => null },
         imageService: { getParams: () => ({}) },

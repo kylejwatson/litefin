@@ -20,7 +20,10 @@ const quietLog = { info() {}, debug() {}, warn() {}, error() {} };
 
 // A 4K LG TV whose web app reports a 1080p viewport (the usual case)
 Object.defineProperty(globalThis, 'navigator', {
-    value: { userAgent: 'Mozilla/5.0 (Web0S; Linux/SmartTV) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.6099.270 Safari/537.36 WebAppManager' },
+    value: {
+        userAgent:
+            'Mozilla/5.0 (Web0S; Linux/SmartTV) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.6099.270 Safari/537.36 WebAppManager'
+    },
     configurable: true
 });
 globalThis.window = {
@@ -66,8 +69,15 @@ function createAuthManager(reports) {
         buildJellyfinProfile: WebOSProfile.buildJellyfinProfile,
         clearCapabilitiesCache: WebOSProfile.clearCapabilitiesCache
     });
-    const methods = vm.runInContext(`({\n${extractMethod(authSource, '_onWebosDeviceInfo(info) {')}\n})`, context);
-    return Object.assign(Object.create(methods), { isAuthenticated: () => true });
+    const methods = vm.runInContext(
+        `({\n${[
+            extractMethod(authSource, '_onWebosDeviceInfo(info) {'),
+            extractMethod(authSource, '_reportCapabilitiesNow() {')
+        ].join(',\n')}\n})`,
+        context
+    );
+    // Splash already hidden: the re-report is sent right away instead of being deferred
+    return Object.assign(Object.create(methods), { isAuthenticated: () => true, _splashHidden: true });
 }
 
 test('AuthManager: the capability report after webOS device info carries the real 4K / Dolby Vision profile', () => {
@@ -139,7 +149,11 @@ test('PrewarmManager: a PlaybackInfo prewarmed before webOS device info is not u
 
     emit('webos:deviceInfoReady');
 
-    assert.strictEqual(manager.consumePlaybackInfo('item', {}), null, 'playback used the fallback-profile PlaybackInfo');
+    assert.strictEqual(
+        manager.consumePlaybackInfo('item', {}),
+        null,
+        'playback used the fallback-profile PlaybackInfo'
+    );
     assert.ok(wasAborted(), 'the prewarm request was left running');
 });
 

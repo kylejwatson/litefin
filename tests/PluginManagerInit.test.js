@@ -6,8 +6,9 @@ import vm from 'node:vm';
 // Load App.js source to extract the Plugin Manager initialization block
 const appSource = readFileSync(new URL('../src/core/App.js', import.meta.url), 'utf8');
 
+const pluginSectionStart = appSource.indexOf('        // 4.6. Plugin Manager Initialization');
 const initBlock = appSource.slice(
-    appSource.indexOf("        if (state.get('user:authenticated')) {"),
+    appSource.indexOf("        if (state.get('user:authenticated')) {", pluginSectionStart),
     appSource.indexOf('        // Initialize ScreensaverManager')
 );
 
@@ -76,8 +77,7 @@ function evaluateInitBlock({
     const appScope = {};
     context.appScope = appScope;
     vm.runInNewContext(
-        `(function () {\n${initBlock}\n}).call(appScope);\n` +
-        `(function () {\n${hideSplashBlock}\n}).call(appScope);`,
+        `(function () {\n${initBlock}\n}).call(appScope);\n` + `(function () {\n${hideSplashBlock}\n}).call(appScope);`,
         context
     );
 

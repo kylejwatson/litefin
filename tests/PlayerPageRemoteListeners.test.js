@@ -78,7 +78,7 @@ function createSession() {
         androidAdapter: { setOrientation: noop },
         SubtitleStyles: { getCurrentFontId: () => null },
         FontLoader: { loadFont: async () => {} },
-        prewarmManager: { getPrewarmedItem: () => null },
+        prewarmManager: { getPrewarmedItem: () => null, clear: () => {} },
         PlayerSettings: { get: () => null },
         storage: { getItem: () => null },
         // Samsung: without a player, the volume keys change the TV volume

@@ -280,7 +280,7 @@ test('VirtualCardRow: Modern Portrait Rows calculate exact inline width and 2:3 
 });
 
 test('modern/home.css: Contains explicit legacy and ultra-legacy tier margin-left resets', () => {
-    const css = readFileSync('litefin/src/styles/modern/home.css', 'utf8');
+    const css = readFileSync(new URL('../src/styles/modern/home.css', import.meta.url), 'utf8');
 
     assert.ok(
         css.includes('html[data-layout-tier="legacy"][data-media-rows-cards="modern"]'),
@@ -297,15 +297,12 @@ test('modern/home.css: Contains explicit legacy and ultra-legacy tier margin-lef
 });
 
 test('HomePage.js: Skeletons assign modern layout dimensions instead of expanding values', () => {
-    const js = readFileSync('litefin/src/pages/HomePage.js', 'utf8');
+    const js = readFileSync(new URL('../src/pages/HomePage.js', import.meta.url), 'utf8');
 
     // Ensure isModern branch does NOT set expanding values (175.5px or 468px)
     assert.ok(
         js.includes(`} else if (isModern || isModernPosters) {`),
         'HomePage.js must group isModern with isModernPosters for card metrics'
     );
-    assert.ok(
-        js.includes(`} else if (isExpanding) {`),
-        'HomePage.js must maintain a dedicated isExpanding branch'
-    );
+    assert.ok(js.includes(`} else if (isExpanding) {`), 'HomePage.js must maintain a dedicated isExpanding branch');
 });
